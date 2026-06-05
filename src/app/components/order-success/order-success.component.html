@@ -1,0 +1,130 @@
+<div class="os-page">
+  <div class="os-wrap">
+
+    <!-- Loading -->
+    <div class="os-loading" *ngIf="loading">
+      <span><i class="fa-light fa-spinner-third fa-spin"></i></span>
+    </div>
+
+    <ng-container *ngIf="!loading">
+
+      <!-- ── Green success header ── -->
+      <div class="os-hero">
+        <div class="os-check-circle">
+          <svg viewBox="0 0 52 52" fill="none" xmlns="http://www.w3.org/2000/svg" width="52" height="52">
+            <circle cx="26" cy="26" r="26" fill="#2e7d32"/>
+            <polyline points="14,27 22,35 38,18"
+              stroke="#fff" stroke-width="3.5"
+              stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <h1 class="os-title">Thank You!</h1>
+        <p class="os-subtitle">Your order has been placed successfully.</p>
+        <p class="os-email-note">A confirmation email will be sent to <strong>{{ authService.customer?.email }}</strong></p>
+      </div>
+
+      <!-- ── Order summary box ── -->
+      <div class="os-summary-box" *ngIf="order">
+
+        <!-- Order meta -->
+        <div class="os-meta-grid">
+          <div class="os-meta-item">
+            <span class="os-meta-label">Order Number</span>
+            <span class="os-meta-val">{{ order.orderNumber }}</span>
+          </div>
+          <div class="os-meta-item">
+            <span class="os-meta-label">Order Date</span>
+            <span class="os-meta-val">{{ order.created_at | date:'dd MMM yyyy' }}</span>
+          </div>
+          <div class="os-meta-item">
+            <span class="os-meta-label">Status</span>
+            <span class="os-status-badge" [class]="getStatusClass(order.status)">{{ order.status | titlecase }}</span>
+          </div>
+          <div class="os-meta-item">
+            <span class="os-meta-label">Payment</span>
+            <span class="os-meta-val">Razorpay</span>
+          </div>
+        </div>
+
+        <div class="os-divider"></div>
+
+        <!-- Delivery address -->
+        <div class="os-section" *ngIf="order.deliveryAddress">
+          <h3 class="os-section-title">Delivery Address</h3>
+          <p class="os-addr-text">{{ getAddress() }}</p>
+          <p class="os-addr-phone" *ngIf="order.contactPhone">
+            <span><i class="fa-light fa-phone"></i></span> {{ order.contactPhone }}
+          </p>
+        </div>
+
+        <div class="os-divider"></div>
+
+        <!-- Items table -->
+        <div class="os-section">
+          <h3 class="os-section-title">Items Ordered</h3>
+          <table class="os-items-table">
+            <thead>
+              <tr>
+                <th colspan="2">Item</th>
+                <th>Size</th>
+                <th>Qty</th>
+                <th class="os-th-right">Price</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of getItems()">
+                <td class="os-td-img">
+                  <img *ngIf="item.image" [src]="item.image" [alt]="item.name" class="os-item-img" />
+                  <div *ngIf="!item.image" class="os-item-img-ph"></div>
+                </td>
+                <td class="os-td-name">
+                  <span class="os-item-name">{{ item.name }}</span>
+                  <span class="os-item-stock">In Stock</span>
+                </td>
+                <td class="os-td-size">
+                  <ng-container *ngFor="let opt of getOptionEntries(item.selectedOptions)">
+                    <span>{{ opt.value }}</span>
+                  </ng-container>
+                  <span *ngIf="!item.selectedOptions || getOptionEntries(item.selectedOptions).length === 0">ONE</span>
+                </td>
+                <td class="os-td-qty">{{ item.quantity }}</td>
+                <td class="os-td-price">{{ currency }}{{ ((item.salePrice ?? item.price) * item.quantity).toFixed(2) }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="os-divider"></div>
+
+        <!-- Totals -->
+        <div class="os-totals">
+          <div class="os-total-row">
+            <span>Order Value</span>
+            <span>{{ currency }}{{ order.subtotal }}</span>
+          </div>
+          <div class="os-total-row">
+            <span>Delivery</span>
+            <span>{{ currency }}{{ order.deliveryCharge }}</span>
+          </div>
+          <div class="os-total-row os-grand-total">
+            <span>Total (Incl. Delivery: {{ currency }}{{ order.deliveryCharge }})</span>
+            <span>{{ currency }}{{ order.total }}</span>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- ── Actions ── -->
+      <div class="os-actions">
+        <a routerLink="/account" [queryParams]="{section:'orders'}" class="os-btn os-btn-primary">
+          VIEW MY ORDERS
+        </a>
+        <a routerLink="/shop" class="os-btn os-btn-outline">
+          CONTINUE SHOPPING
+        </a>
+      </div>
+
+    </ng-container>
+
+  </div>
+</div>

@@ -1,0 +1,116 @@
+<div class="sitemap-page">
+
+    <!-- ── Left sidebar navigation ── -->
+    <aside class="sitemap-nav">
+        <h2 class="sitemap-nav-title">NAVIGATION</h2>
+        <nav>
+            <a class="sitemap-nav-link" *ngFor="let item of navItems"
+               [class.active]="activeSection === item.id"
+               (click)="scrollTo(item.id)">
+                {{ item.label }}
+            </a>
+        </nav>
+        <p class="sitemap-nav-note">
+            {{ siteName }} Directory is not responsible for the content of external Internet sites.
+        </p>
+    </aside>
+
+    <!-- ── Main content ── -->
+    <main class="sitemap-main">
+
+        <!-- ── SHOP BY CATEGORY ── -->
+        <section id="sm-categories" class="sitemap-section">
+            <h1 class="sitemap-section-title">SHOP BY CATEGORY</h1>
+
+            <ng-container *ngFor="let root of rootCategories">
+
+                <!-- Root category heading -->
+                <div class="sitemap-cat-block">
+                    <h3 class="sitemap-cat-heading">
+                        <a (click)="goToCategory(root)">{{ root.name | uppercase }}</a>
+                    </h3>
+                    <div class="sitemap-cat-divider"></div>
+
+                    <!-- Level 1 sub-categories in 3-col grid -->
+                    <ng-container *ngIf="root.level1.length > 0">
+                        <div class="sitemap-links-grid">
+                            <ng-container *ngFor="let l1 of root.level1">
+                                <!-- If l1 has children, show as group heading -->
+                                <ng-container *ngIf="l1.level2.length > 0">
+                                    <div class="sitemap-link-group">
+                                        <a class="sitemap-link sitemap-link-bold"
+                                           (click)="goToCategory(l1)">{{ l1.name }}</a>
+                                        <a class="sitemap-link" *ngFor="let l2 of l1.level2"
+                                           (click)="goToCategory(l2)">{{ l2.name }}</a>
+                                    </div>
+                                </ng-container>
+                                <!-- If l1 has no children, show as flat link -->
+                                <ng-container *ngIf="l1.level2.length === 0">
+                                    <a class="sitemap-link" (click)="goToCategory(l1)">{{ l1.name }}</a>
+                                </ng-container>
+                            </ng-container>
+                        </div>
+                    </ng-container>
+
+                    <!-- No sub-categories -->
+                    <div class="sitemap-links-grid" *ngIf="root.level1.length === 0">
+                        <a class="sitemap-link" (click)="goToCategory(root)">
+                            Shop All {{ root.name }}
+                        </a>
+                    </div>
+                </div>
+
+            </ng-container>
+
+            <!-- Empty state -->
+            <p class="sitemap-empty" *ngIf="rootCategories.length === 0">
+                No categories available.
+            </p>
+        </section>
+
+        <!-- ── SHOP BY BRAND ── -->
+        <section id="sm-brands" class="sitemap-section">
+            <h1 class="sitemap-section-title">SHOP BY BRAND</h1>
+            <div class="sitemap-cat-divider"></div>
+            <div class="sitemap-links-grid sitemap-brands-grid" *ngIf="brands.length > 0">
+                <a class="sitemap-link" *ngFor="let brand of brands"
+                   (click)="goToBrand(brand)">{{ brand.name }}</a>
+            </div>
+            <p class="sitemap-empty" *ngIf="brands.length === 0">No brands available.</p>
+        </section>
+
+        <!-- ── HELP & INFORMATION ── -->
+        <section id="sm-help" class="sitemap-section">
+            <h1 class="sitemap-section-title">HELP & INFORMATION</h1>
+            <div class="sitemap-cat-divider"></div>
+            <div class="sitemap-links-grid">
+                <a class="sitemap-link" *ngFor="let link of helpLinks"
+                   [href]="link.url">{{ link.label }}</a>
+            </div>
+        </section>
+
+        <!-- ── PRIVACY & LEGAL ── -->
+        <section id="sm-legal" class="sitemap-section">
+            <h1 class="sitemap-section-title">PRIVACY & LEGAL</h1>
+            <div class="sitemap-cat-divider"></div>
+            <div class="sitemap-links-grid">
+                <ng-container *ngFor="let link of legalLinks">
+                    <a class="sitemap-link" *ngIf="link.routerLink" [routerLink]="link.url">{{ link.label }}</a>
+                    <a class="sitemap-link" *ngIf="!link.routerLink" [href]="link.url">{{ link.label }}</a>
+                </ng-container>
+            </div>
+        </section>
+
+        <!-- ── OTHER SERVICES ── -->
+        <section id="sm-other" class="sitemap-section">
+            <h1 class="sitemap-section-title">OTHER SERVICES</h1>
+            <div class="sitemap-cat-divider"></div>
+            <div class="sitemap-links-grid">
+                <a class="sitemap-link" *ngFor="let link of otherLinks"
+                   [routerLink]="link.url">{{ link.label }}</a>
+            </div>
+        </section>
+
+    </main>
+
+</div>

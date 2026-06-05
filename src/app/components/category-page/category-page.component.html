@@ -1,0 +1,209 @@
+<!-- Loading skeleton -->
+<div class="catpage-skeleton" *ngIf="isLoading">
+    <div class="sk-hero"></div>
+    <div class="sk-subcats">
+        <div class="sk-subcat" *ngFor="let s of [1,2,3,4,5,6,7,8]"></div>
+    </div>
+</div>
+
+<div class="catpage" *ngIf="!isLoading && category">
+
+    <!-- ══ HERO BANNER ══ -->
+    <section class="catpage-hero" *ngIf="heroBanner?.url"
+        [class.has-link]="heroBanner?.link"
+        (click)="heroBanner?.link ? openLink(heroBanner.link) : null">
+        <img [src]="heroBanner.url" [alt]="category.name" class="catpage-hero-img" />
+        <div class="catpage-hero-overlay" *ngIf="heroBanner?.title || heroBanner?.subtitle || heroBanner?.btnText">
+            <div class="catpage-hero-content" [class]="'align-' + (heroBanner?.align || 'left')">
+                <h1 class="catpage-hero-title" *ngIf="heroBanner?.title">{{ heroBanner.title }}</h1>
+                <p class="catpage-hero-sub" *ngIf="heroBanner?.subtitle">{{ heroBanner.subtitle }}</p>
+                <button class="catpage-hero-btn" *ngIf="heroBanner?.btnText"
+                    (click)="$event.stopPropagation(); openLink(heroBanner.btnLink || heroBanner.link)">
+                    {{ heroBanner.btnText }}
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- No hero — just title bar -->
+    <section class="catpage-title-bar" *ngIf="!heroBanner?.url">
+        <h1 class="catpage-title-text">{{ category.name | uppercase }}</h1>
+    </section>
+
+    <!-- ══ SUB-CATEGORIES SLIDER ══ -->
+    <section class="catpage-subcats" *ngIf="subCategories.length > 0">
+
+        <!-- Header: title + arrows -->
+        <div class="catpage-subcats-header">
+            <h2 class="catpage-subcats-title">SHOP BY CATEGORY</h2>
+            <div class="catpage-subcats-arrows" *ngIf="subCategories.length > VISIBLE">
+                <button class="subcat-arrow" (click)="subcatPrev()" [disabled]="subcatSlide === 0" aria-label="Previous">
+                    <span><i class="fa-light fa-chevron-left"></i></span>
+                </button>
+                <button class="subcat-arrow" (click)="subcatNext()" [disabled]="subcatSlide >= subcatMaxSlide" aria-label="Next">
+                    <span><i class="fa-light fa-chevron-right"></i></span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Slider track -->
+        <div class="catpage-subcats-track-wrap">
+            <div class="catpage-subcats-inner" [style.transform]="subcatTranslate">
+                <div class="subcat-card" *ngFor="let sub of subCategories"
+                    [class]="subcatCardClass"
+                    (click)="goToSubCategory(sub)">
+                    <div class="subcat-circle">
+                        <img *ngIf="sub.image" [src]="sub.image" [alt]="sub.name" loading="lazy" />
+                        <div class="subcat-circle-empty" *ngIf="!sub.image">
+                            <span><i class="fa-light fa-shirt"></i></span>
+                        </div>
+                    </div>
+                    <span class="subcat-name">{{ sub.name }}</span>
+                </div>
+            </div>
+        </div>
+
+    </section>
+
+    <!-- ══ DYNAMIC SECTIONS (from config) ══ -->
+    <ng-container *ngFor="let section of sections">
+
+        <!-- Section type: banner_grid (1, 2, or 3 column banners) -->
+        <section class="catpage-section" *ngIf="section.type === 'banner_grid' && section.banners?.length">
+            <div class="catpage-section-header" *ngIf="section.title">
+                <h2 class="catpage-section-title">{{ section.title }}</h2>
+                <a class="catpage-section-link" *ngIf="section.linkText && section.linkUrl"
+                    (click)="openLink(section.linkUrl)">{{ section.linkText }}</a>
+            </div>
+            <div class="banner-grid" [class]="'cols-' + (section.cols || section.banners.length)">
+                <div class="banner-cell" *ngFor="let b of section.banners"
+                    [class.has-link]="b.link"
+                    (click)="b.link ? openLink(b.link) : null">
+                    <img *ngIf="b.url" [src]="b.url" [alt]="b.label || ''" loading="lazy" />
+                    <div class="banner-cell-overlay" *ngIf="b.label || b.btnText">
+                        <span class="banner-cell-label" *ngIf="b.label">{{ b.label }}</span>
+                        <button class="banner-cell-btn" *ngIf="b.btnText"
+                            (click)="$event.stopPropagation(); openLink(b.link)">
+                            {{ b.btnText }}
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section type: sub_category_links (text link grid) -->
+        <section class="catpage-section catpage-links-section" *ngIf="section.type === 'sub_category_links'">
+            <div class="catpage-section-header" *ngIf="section.title">
+                <h2 class="catpage-section-title">{{ section.title }}</h2>
+            </div>
+            <div class="catpage-links-grid">
+                <ng-container *ngFor="let sub of subCategories">
+                    <div class="catpage-link-group">
+                        <a class="catpage-link-head" (click)="goToSubCategory(sub)">{{ sub.name }}</a>
+                        <ng-container *ngFor="let child of appStore.getChildren(sub.id)">
+                            <a class="catpage-link-item" (click)="goToCategory(child)">{{ child.name }}</a>
+                        </ng-container>
+                    </div>
+                </ng-container>
+            </div>
+        </section>
+
+        <!-- Section type: text_banner (full-width text + CTA) -->
+        <section class="catpage-section catpage-text-banner" *ngIf="section.type === 'text_banner'"
+            [style.background]="section.bgColor || '#f5f5f5'">
+            <div class="text-banner-inner">
+                <h2 class="text-banner-title" *ngIf="section.title" [style.color]="section.textColor || '#1c1c1c'">
+                    {{ section.title }}
+                </h2>
+                <p class="text-banner-body" *ngIf="section.body" [style.color]="section.textColor || '#555'">
+                    {{ section.body }}
+                </p>
+                <button class="text-banner-btn" *ngIf="section.btnText"
+                    (click)="openLink(section.btnLink)">
+                    {{ section.btnText }}
+                </button>
+            </div>
+        </section>
+
+    </ng-container>
+
+    <!-- ══ FEATURED PRODUCTS ══ -->
+    <section class="catpage-featured">
+        <div class="catpage-featured-header">
+            <h2 class="catpage-featured-title">{{ featuredTitle }}</h2>
+            <button class="catpage-featured-showall" (click)="shopAll()">
+                SHOP ALL <span><i class="fa-light fa-arrow-right"></i></span>
+            </button>
+        </div>
+
+        <!-- Skeleton -->
+        <div class="featured-grid" *ngIf="featuredLoading">
+            <div class="product-card sk-card" *ngFor="let s of skeletonArr">
+                <div class="sk-img"></div>
+                <div class="sk-line w80"></div>
+                <div class="sk-line w50"></div>
+            </div>
+        </div>
+
+        <!-- Products -->
+        <div class="featured-grid" *ngIf="!featuredLoading && featuredProducts.length > 0">
+            <a class="product-card" *ngFor="let p of featuredProducts"
+                [routerLink]="['/product', p.slug]">
+                <div class="prod-img-wrap">
+                    <img *ngIf="getFirstImage(p.images)" [src]="getFirstImage(p.images)"
+                        [alt]="p.name" loading="lazy" />
+                    <div *ngIf="!getFirstImage(p.images)" class="prod-img-empty">
+                        <span><i class="fa-light fa-image"></i></span>
+                    </div>
+                    <span class="prod-brand-tag" *ngIf="p.brandName">{{ p.brandName | uppercase }}</span>
+                    <button class="prod-wish-btn" [class.fav-active]="isFav(p.id)"
+                        (click)="toggleWishlist($event, p)" aria-label="Wishlist">
+                        <svg viewBox="0 0 24 24"
+                            [attr.fill]="isFav(p.id) ? '#c8102e' : 'none'"
+                            [attr.stroke]="isFav(p.id) ? '#c8102e' : 'currentColor'"
+                            stroke-width="1.8" width="17" height="17">
+                            <path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/>
+                        </svg>
+                    </button>
+                    <span class="prod-sale-tag" *ngIf="p.salePrice">SALE</span>
+                </div>
+                <div class="prod-info">
+                    <div class="prod-name">{{ p.name }}</div>
+                    <div class="prod-prices">
+                        <span class="price-sale" *ngIf="p.salePrice">{{ sharedService.currency }}{{ p.salePrice }}</span>
+                        <span class="price-orig" [class.crossed]="p.salePrice">{{ sharedService.currency }}{{ p.price }}</span>
+                    </div>
+                </div>
+            </a>
+        </div>
+
+        <!-- Empty -->
+        <div class="featured-empty" *ngIf="!featuredLoading && featuredProducts.length === 0">
+            <p>No products yet in this category.</p>
+            <button class="catpage-hero-btn" (click)="shopAll()">BROWSE ALL PRODUCTS</button>
+        </div>
+
+        <!-- Shop All CTA -->
+        <div class="catpage-showall-row" *ngIf="featuredProducts.length > 0">
+            <button class="catpage-showall-btn" (click)="shopAll()">
+                SHOP ALL {{ category.name | uppercase }}
+            </button>
+        </div>
+    </section>
+
+    <!-- ══ SUB-CATEGORY LINKS (A-Z style) ══ -->
+    <section class="catpage-az-section" *ngIf="subCategories.length > 0">
+        <div class="catpage-az-inner">
+            <div class="catpage-az-col" *ngFor="let sub of subCategories">
+                <a class="catpage-az-head" (click)="goToSubCategory(sub)">{{ sub.name }}</a>
+                <ng-container *ngFor="let child of appStore.getChildren(sub.id)">
+                    <a class="catpage-az-item" (click)="goToCategory(child)">{{ child.name }}</a>
+                </ng-container>
+                <a class="catpage-az-item catpage-az-viewall" (click)="goToSubCategory(sub)">
+                    View All {{ sub.name }}
+                </a>
+            </div>
+        </div>
+    </section>
+
+</div>

@@ -1,0 +1,37 @@
+<!-- Backdrop -->
+<div class="cookie-backdrop" *ngIf="visible" (click)="acceptAll()"></div>
+
+<!-- Modal -->
+<div class="cookie-modal" *ngIf="visible" role="dialog" aria-modal="true" aria-labelledby="cookie-title">
+
+    <h2 class="cookie-title" id="cookie-title">OUR SITE USES COOKIES</h2>
+
+    <p class="cookie-body">
+        Cookies help us to ensure our site works securely, continually make
+        improvements, and personalise your shopping experience.
+    </p>
+
+    <p class="cookie-body">
+        Click 'Accept All Cookies' to get the best shopping experience. You can
+        change these settings at any time by clicking 'Manually Manage Cookies'
+        below.
+    </p>
+
+    <p class="cookie-body">
+        For more information, please see our
+        <a class="cookie-policy-link" href="javascript:void(0)">Privacy &amp; Cookie Policy</a>.
+    </p>
+
+    <button class="cookie-btn cookie-btn-accept" (click)="acceptAll()">
+        ACCEPT ALL COOKIES
+    </button>
+
+    <button class="cookie-btn cookie-btn-reject" (click)="rejectNonEssential()">
+        REJECT NON-ESSENTIAL COOKIES
+    </button>
+
+    <button class="cookie-btn-text" (click)="manageManually()">
+        MANUALLY MANAGE COOKIES
+    </button>
+
+</div>

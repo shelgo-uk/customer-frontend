@@ -1,0 +1,115 @@
+<div class="cart-page">
+
+  <!-- ── TITLE ── -->
+  <div class="cart-title-bar">
+    <h1 class="cart-title">SHOPPING BAG <span class="cart-count">({{ count }})</span></h1>
+  </div>
+
+  <!-- ── EMPTY STATE ── -->
+  <div class="cart-empty" *ngIf="items.length === 0">
+    <div class="cart-empty-icon">
+      <span><i class="fa-light fa-bag-shopping"></i></span>
+    </div>
+    <p class="cart-empty-msg">Your bag is empty</p>
+    <a routerLink="/shop" class="cart-continue-btn">CONTINUE SHOPPING</a>
+  </div>
+
+  <!-- ── MAIN LAYOUT ── -->
+  <div class="cart-layout" *ngIf="items.length > 0">
+
+    <!-- RIGHT: Summary (shows first on mobile via order) -->
+    <div class="cart-summary-col">
+      <div class="cart-summary-sticky">
+        <div class="cart-summary-box">
+          <div class="cart-summary-total-row">
+            <span class="cart-summary-total-label">Total:</span>
+            <span class="cart-summary-total-val">{{ total | currency:'GBP':'symbol':'1.2-2' }}</span>
+          </div>
+          <p class="cart-summary-delivery-note">Excluding UK Standard Delivery (Normally £4.95)</p>
+          <a routerLink="/checkout" class="cart-checkout-btn">CHECKOUT</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- LEFT: Items -->
+    <div class="cart-items-col">
+      <div class="cart-item" *ngFor="let item of items; trackBy: trackById">
+
+        <!-- Image -->
+        <a [routerLink]="['/product', item.slug]" class="cart-item-img-wrap">
+          <img *ngIf="item.image" [src]="item.image" [alt]="item.name" class="cart-item-img" />
+          <div *ngIf="!item.image" class="cart-item-img-placeholder">
+            <span><i class="fa-light fa-image"></i></span>
+          </div>
+        </a>
+
+        <!-- Details -->
+        <div class="cart-item-details">
+
+          <!-- Name + price row -->
+          <div class="cart-item-name-price">
+            <a [routerLink]="['/product', item.slug]" class="cart-item-name">{{ item.name }}</a>
+            <div class="cart-item-price-col">
+              <span class="price-sale" *ngIf="item.salePrice">{{ (item.salePrice * item.quantity) | currency:'GBP':'symbol':'1.2-2' }}</span>
+              <span class="price-orig" [class.strikethrough]="item.salePrice">{{ (item.price * item.quantity) | currency:'GBP':'symbol':'1.2-2' }}</span>
+              <!-- <span class="cart-item-sku" *ngIf="item.sku">{{ item.sku }}</span> -->
+            </div>
+          </div>
+
+          <!-- Options -->
+          <div class="cart-item-meta">
+            <ng-container *ngFor="let opt of getOptionEntries(item.selectedOptions)">
+              <span class="cart-meta-row">{{ opt.key }}: <strong>{{ opt.value }}</strong></span>
+            </ng-container>
+            <span class="cart-meta-row">Quantity: <strong>{{ item.quantity }}</strong></span>
+          </div>
+
+          <!-- Stock -->
+          <div class="cart-item-stock">
+            <span><i class="fa-solid fa-circle-check"></i></span> In Stock
+          </div>
+
+          <!-- Qty controls (desktop) -->
+          <div class="cart-qty-row desktop-only">
+            <div class="cart-qty-ctrl">
+              <button class="qty-btn" (click)="decrement(item)" [disabled]="item.quantity <= 1" aria-label="Decrease">
+                <span><i class="fa-light fa-minus"></i></span>
+              </button>
+              <span class="qty-val">{{ item.quantity }}</span>
+              <button class="qty-btn" (click)="increment(item)" aria-label="Increase">
+                <span><i class="fa-light fa-plus"></i></span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Actions -->
+          <div class="cart-item-actions">
+            <button class="cart-action-link" (click)="saveForLater(item)">Save For Later</button>
+            <button class="cart-action-link" (click)="increment(item)">Edit</button>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ── SAVED FOR LATER ── -->
+  <div class="cart-saved-section" *ngIf="savedItems.length > 0">
+    <div class="cart-saved-header">
+      <span class="cart-saved-title">Saved For Later ({{ savedItems.length }})</span>
+    </div>
+    <div class="cart-saved-items">
+      <div class="cart-saved-item" *ngFor="let item of savedItems">
+        <img *ngIf="item.image" [src]="item.image" [alt]="item.name" class="cart-saved-img" />
+        <div class="cart-saved-info">
+          <div class="cart-saved-name">{{ item.name }}</div>
+          <div class="cart-saved-price">{{ (item.salePrice ?? item.price) | currency:'GBP':'symbol':'1.2-2' }}</div>
+          <button class="cart-move-btn" (click)="moveToCart(item)">Move to Bag</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>

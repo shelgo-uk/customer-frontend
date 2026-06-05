@@ -1,0 +1,512 @@
+<div class="acct-page" *ngIf="authService.isLoggedIn">
+
+    <!-- ══ MOBILE HEADER ══ -->
+    <div class="acct-mobile-header">
+        <div class="acct-mobile-greeting">
+            Hi, {{ customer?.firstName || 'My Account' }}
+            <span>{{ customer?.email }}</span>
+        </div>
+        <button class="acct-mobile-signout" (click)="logout()">SIGN OUT</button>
+    </div>
+
+    <!-- ══ MOBILE TAB BAR (horizontal scroll) ══ -->
+    <div class="acct-mobile-tabs">
+        <div class="acct-mobile-tabs-inner">
+            <button class="acct-mob-tab" [class.active]="activeSection==='orders'" (click)="setSection('orders')">
+                <span class="acct-mob-tab-icon"><i class="fa-light fa-bag-shopping"></i></span>
+                Orders
+            </button>
+            <button class="acct-mob-tab" [class.active]="activeSection==='addresses'" (click)="setSection('addresses')">
+                <span class="acct-mob-tab-icon"><i class="fa-light fa-location-dot"></i></span>
+                Addresses
+            </button>
+            <button class="acct-mob-tab" [class.active]="activeSection==='cards'" (click)="setSection('cards')">
+                <span class="acct-mob-tab-icon"><i class="fa-light fa-credit-card"></i></span>
+                Cards
+            </button>
+            <button class="acct-mob-tab" [class.active]="activeSection==='signin'||activeSection==='contact'||activeSection==='details'" (click)="setSection('signin')">
+                <span class="acct-mob-tab-icon"><i class="fa-light fa-circle-user"></i></span>
+                Details
+            </button>
+            <button class="acct-mob-tab" [class.active]="activeSection==='returns'||activeSection==='collection'||activeSection==='label'" (click)="setSection('returns')">
+                <span class="acct-mob-tab-icon"><i class="fa-light fa-rotate-left"></i></span>
+                Returns
+            </button>
+            <a routerLink="/wishlist" class="acct-mob-tab">
+                <span class="acct-mob-tab-icon"><i class="fa-light fa-heart"></i></span>
+                Wishlist
+            </a>
+            <a routerLink="/shop" class="acct-mob-tab">
+                <span class="acct-mob-tab-icon"><i class="fa-light fa-store"></i></span>
+                Shop
+            </a>
+        </div>
+    </div>
+
+    <div class="acct-layout">
+
+        <!-- ══ SIDEBAR ══ -->
+        <aside class="acct-sidebar">
+            <h2 class="acct-sidebar-title">My Account</h2>
+            <div class="acct-sidebar-divider"></div>
+            <nav class="acct-nav">
+
+                <!-- My Orders -->
+                <button class="acct-nav-item" [class.active]="activeSection==='orders'" (click)="setSection('orders')">
+                    <span class="acct-nav-chevron"><span><i class="fa-light fa-chevron-right"></i></span></span>
+                    My Orders
+                </button>
+
+                <!-- Saved Cards -->
+                <button class="acct-nav-item" [class.active]="activeSection==='cards'" (click)="setSection('cards')">
+                    <span class="acct-nav-chevron"><span><i class="fa-light fa-chevron-right"></i></span></span>
+                    Saved Cards
+                </button>
+
+                <!-- nextunlimited -->
+                <!-- <button class="acct-nav-item" [class.active]="activeSection==='unlimited'" (click)="setSection('unlimited')">
+                    <span class="acct-nav-chevron"><span><i class="fa-light fa-chevron-right"></i></span></span>
+                    nextunlimited
+                </button> -->
+
+                <!-- Change Details (expandable) -->
+                <button class="acct-nav-item"
+                    [class.active]="activeSection==='details'||activeSection==='signin'||activeSection==='contact'||activeSection==='billing'"
+                    (click)="setSection('details')">
+                    <span class="acct-nav-chevron">
+                        <span><i [class]="(activeSection==='details'||activeSection==='signin'||activeSection==='contact'||activeSection==='billing') ? 'fa-light fa-chevron-down' : 'fa-light fa-chevron-right'"></i></span>
+                    </span>
+                    Change Details
+                </button>
+                <div class="acct-nav-sub" *ngIf="activeSection==='details'||activeSection==='signin'||activeSection==='contact'||activeSection==='billing'">
+                    <button class="acct-nav-sub-item" [class.active]="activeSection==='signin'" (click)="setSection('signin')">Sign In Details</button>
+                    <button class="acct-nav-sub-item" [class.active]="activeSection==='contact'" (click)="setSection('contact')">Contact Details</button>
+                    <button class="acct-nav-sub-item" [class.active]="activeSection==='billing'" (click)="setSection('billing')">Change Billing Address</button>
+                </div>
+
+                <!-- Delivery Addresses -->
+                <button class="acct-nav-item" [class.active]="activeSection==='addresses'" (click)="setSection('addresses')">
+                    <span class="acct-nav-chevron"><span><i class="fa-light fa-chevron-right"></i></span></span>
+                    Delivery Addresses
+                </button>
+
+                <!-- Returns (expandable) -->
+                <button class="acct-nav-item"
+                    [class.active]="activeSection==='returns'||activeSection==='collection'||activeSection==='label'"
+                    (click)="setSection('returns')">
+                    <span class="acct-nav-chevron">
+                        <span><i [class]="(activeSection==='returns'||activeSection==='collection'||activeSection==='label') ? 'fa-light fa-chevron-down' : 'fa-light fa-chevron-right'"></i></span>
+                    </span>
+                    Returns
+                </button>
+                <div class="acct-nav-sub" *ngIf="activeSection==='returns'||activeSection==='collection'||activeSection==='label'">
+                    <button class="acct-nav-sub-item" [class.active]="activeSection==='collection'" (click)="setSection('collection')">Arrange A Collection</button>
+                    <button class="acct-nav-sub-item" [class.active]="activeSection==='label'" (click)="setSection('label')">Replacement Label</button>
+                </div>
+
+                <!-- 2-Factor Authentication -->
+                <button class="acct-nav-item" [class.active]="activeSection==='2fa'" (click)="setSection('2fa')">
+                    <span class="acct-nav-chevron"><span><i class="fa-light fa-chevron-right"></i></span></span>
+                    2-Factor Authentication
+                </button>
+
+                <!-- Request a Call Back -->
+                <button class="acct-nav-item" [class.active]="activeSection==='callback'" (click)="setSection('callback')">
+                    <span class="acct-nav-chevron"><span><i class="fa-light fa-chevron-right"></i></span></span>
+                    Request a Call Back
+                </button>
+
+                <div class="acct-nav-divider"></div>
+
+                <!-- Shop Now -->
+                <a routerLink="/shop" class="acct-nav-item acct-nav-shop">
+                    <span class="acct-nav-chevron"><span><i class="fa-light fa-chevron-right"></i></span></span>
+                    Shop Now
+                </a>
+
+            </nav>
+            <button class="acct-signout-btn" (click)="logout()">SIGN OUT</button>
+        </aside>
+
+        <!-- ══ CONTENT ══ -->
+        <main class="acct-content">
+
+            <!-- Customer meta top-right -->
+            <div class="acct-meta-row">
+                <div class="acct-meta-item">
+                    <span class="acct-meta-label">Customer Number:</span>
+                    <span class="acct-meta-val">{{ customerNumber }}</span>
+                </div>
+                <div class="acct-meta-item">
+                    <span class="acct-meta-label">Selfserve Number:</span>
+                    <span class="acct-meta-val">{{ selfserveNumber }}</span>
+                </div>
+            </div>
+
+            <!-- ── MY ORDERS ── -->
+            <div *ngIf="activeSection==='orders'">
+                <h1 class="acct-content-title">MY ORDERS</h1>
+                <div class="acct-content-divider"></div>
+                <p class="acct-content-desc">Track your orders, cancel items and view items that you have returned.</p>
+
+                <!-- Order tabs -->
+                <div class="orders-tabs">
+                    <button class="orders-tab" [class.active]="ordersTab==='expected'" (click)="ordersTab='expected'">Expected</button>
+                    <button class="orders-tab" [class.active]="ordersTab==='delivered'" (click)="ordersTab='delivered'">Delivered</button>
+                    <button class="orders-tab" [class.active]="ordersTab==='returned'" (click)="ordersTab='returned'">Returned</button>
+                </div>
+
+                <div class="orders-loading" *ngIf="ordersLoading">
+                    <span><i class="fa-light fa-spinner-third fa-spin"></i></span> Loading...
+                </div>
+
+                <div class="orders-empty-msg" *ngIf="!ordersLoading && orders.length === 0">
+                    There are no recent items to display.
+                </div>
+
+                <div class="orders-list" *ngIf="!ordersLoading && orders.length > 0">
+                    <div class="order-row" *ngFor="let order of orders">
+                        <div class="order-row-header" (click)="viewOrder(order)">
+                            <div class="order-row-left">
+                                <span class="order-number">{{ order.orderNumber }}</span>
+                                <span class="order-date">{{ order.created_at | date:'dd MMM yyyy' }}</span>
+                            </div>
+                            <div class="order-row-right">
+                                <span [class]="'order-status-badge ' + getStatusClass(order.status)">{{ order.status | titlecase }}</span>
+                                <span class="order-total">{{ currency }}{{ order.total }}</span>
+                                <span class="order-chevron"><span><i [class]="selectedOrder?.id===order.id ? 'fa-light fa-chevron-up' : 'fa-light fa-chevron-down'"></i></span></span>
+                            </div>
+                        </div>
+                        <div class="order-detail" *ngIf="selectedOrder?.id===order.id">
+                            <table class="order-items-table">
+                                <thead><tr><th></th><th>Item</th><th>Size</th><th>Quantity</th><th>Price</th></tr></thead>
+                                <tbody>
+                                    <tr *ngFor="let item of getOrderItems(order)">
+                                        <td><img [src]="item.image" [alt]="item.name" class="order-item-img" /></td>
+                                        <td>{{ item.name }}</td>
+                                        <td>{{ getItemSize(item) }}</td>
+                                        <td>{{ item.quantity }}</td>
+                                        <td>{{ currency }}{{ ((item.salePrice ?? item.price) * item.quantity).toFixed(2) }}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div class="order-summary">
+                                <div class="order-summary-row"><span>Order Value</span><span>{{ currency }}{{ order.subtotal }}</span></div>
+                                <div class="order-summary-row order-summary-total"><span>Total (Incl. Delivery: {{ currency }}{{ order.deliveryCharge }})</span><span>{{ currency }}{{ order.total }}</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="acct-content-divider" style="margin-top:20px"></div>
+                <p class="acct-content-note">This service is only available for Courier deliveries. Exceptions apply.</p>
+
+                <!-- Where's my order accordion -->
+                <div class="acct-accordion">
+                    <button class="acct-accordion-btn" (click)="whereOrderOpen=!whereOrderOpen">
+                        <span>Where's my order?</span>
+                        <span><i [class]="whereOrderOpen ? 'fa-light fa-chevron-up' : 'fa-light fa-chevron-right'"></i></span>
+                    </button>
+                </div>
+
+                <!-- Unlimited promo -->
+                <!-- <div class="unlimited-promo">
+                    <p>Enjoy free delivery for just £22.50 per year with <strong class="unlimited-link">NEXT UNLIMITED</strong>*</p>
+                    <button class="unlimited-add-btn">ADD TO BAG</button>
+                    <p class="unlimited-note">*Exclusions &amp; T&amp;Cs apply</p>
+                </div> -->
+            </div>
+
+            <!-- ── SAVED CARDS ── -->
+            <div *ngIf="activeSection==='cards'">
+                <h1 class="acct-content-title">MANAGE SAVED CARDS</h1>
+                <div class="acct-content-divider"></div>
+                <div class="cards-section">
+                    <div class="cards-header">
+                        <h3 class="cards-sub-title">Payment details</h3>
+                        <p class="cards-required">* Indicates a required field</p>
+                        <div class="cards-logos">
+                            <span class="card-logo visa">VISA</span>
+                            <span class="card-logo mc">MC</span>
+                            <span class="card-logo amex">AMEX</span>
+                        </div>
+                    </div>
+                    <div class="cards-form-grid">
+                        <div class="cards-field">
+                            <label class="cards-label">Card number *</label>
+                            <input class="acct-input" type="text" placeholder="" />
+                        </div>
+                        <div class="cards-field">
+                            <label class="cards-label">Cardholder's name *</label>
+                            <input class="acct-input" type="text" [value]="customer?.firstName + ' ' + customer?.lastName" />
+                        </div>
+                        <div class="cards-field">
+                            <label class="cards-label">Expiry date *</label>
+                            <div class="cards-expiry">
+                                <input class="acct-input cards-expiry-input" type="text" placeholder="MM" maxlength="2" />
+                                <span class="cards-expiry-sep">/</span>
+                                <input class="acct-input cards-expiry-input" type="text" placeholder="YY" maxlength="2" />
+                            </div>
+                        </div>
+                        <div class="cards-field">
+                            <label class="cards-label">Security code *</label>
+                            <div class="cards-cvv-row">
+                                <input class="acct-input cards-cvv-input" type="text" maxlength="4" />
+                                <span class="cards-cvv-hint">3 digits on the back of the card or 4 digits on the front of card</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="cards-footer">
+                        <button class="acct-update-btn" style="height:48px;padding:0 28px;font-size:13px">Add Card</button>
+                    </div>
+                </div>
+                <div class="acct-accordion">
+                    <button class="acct-accordion-btn">
+                        <span>How to make a payment</span>
+                        <span><i class="fa-light fa-chevron-right"></i></span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- ── NEXTUNLIMITED ── -->
+            <div *ngIf="activeSection==='unlimited'">
+                <h1 class="acct-content-title">NEXTUNLIMITED</h1>
+                <div class="acct-content-divider"></div>
+                <div class="unlimited-info-box">
+                    <p>Enjoy free delivery for just £22.50 per year with <strong>NEXT UNLIMITED</strong>*</p>
+                    <p class="acct-content-note">*Exclusions &amp; T&amp;Cs apply. Excludes 2 person furniture delivery.</p>
+                    <button class="acct-update-btn" style="margin-top:16px;height:48px;padding:0 28px">ADD TO BAG</button>
+                </div>
+            </div>
+
+            <!-- ── SIGN IN DETAILS ── -->
+            <div *ngIf="activeSection==='signin'">
+                <h1 class="acct-content-title">SIGN IN DETAILS</h1>
+                <div class="acct-content-divider"></div>
+                <div class="acct-detail-section">
+                    <div class="acct-detail-row">
+                        <div class="acct-detail-label">
+                            <strong>Email Address</strong>
+                            <p>You will need to use this email address and your current password to sign in.</p>
+                        </div>
+                        <div class="acct-detail-field">
+                            <input class="acct-input" type="email" [(ngModel)]="emailModel" />
+                            <button class="acct-update-btn">UPDATE</button>
+                        </div>
+                    </div>
+                    <div class="acct-detail-row">
+                        <div class="acct-detail-label">
+                            <strong>Change Password</strong>
+                            <p>You will need to use your new password next time you sign in.</p>
+                        </div>
+                        <div class="acct-detail-field">
+                            <div class="acct-pass-wrap">
+                                <input class="acct-input" [type]="passVisible ? 'text' : 'password'" placeholder="New Password" [(ngModel)]="passwordModel" />
+                                <button class="acct-pass-toggle" (click)="passVisible=!passVisible">
+                                    <span><i [class]="passVisible ? 'fa-light fa-eye-slash' : 'fa-light fa-question-circle'"></i></span>
+                                </button>
+                            </div>
+                            <button class="acct-update-btn">UPDATE</button>
+                        </div>
+                    </div>
+                    <div class="acct-detail-row" *ngIf="passVisible">
+                        <div></div>
+                        <div>
+                            <label class="addr-checkbox-label">
+                                <input type="checkbox" [(ngModel)]="passVisible" />
+                                <span>Show Password</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="signin-support-box">
+                    <p>Need to discuss this with our customer services team?<br />
+                    Please <strong>Request a Call Back</strong> or call us on <strong>0333 777 8000</strong>.<br />
+                    Lines are Open Monday – Friday 8am – 9pm and Saturday and Sunday 8am – 7pm. For call charges contact your service provider.</p>
+                    <button class="acct-update-btn" style="height:48px;padding:0 24px;margin-top:12px">REQUEST A CALL BACK</button>
+                </div>
+                <div class="acct-accordion">
+                    <button class="acct-accordion-btn">
+                        <span>How to change your personal details</span>
+                        <span><i class="fa-light fa-chevron-right"></i></span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- ── CONTACT DETAILS ── -->
+            <div *ngIf="activeSection==='contact'">
+                <h1 class="acct-content-title">CONTACT DETAILS</h1>
+                <div class="acct-content-divider"></div>
+                <div class="acct-detail-section">
+                    <div class="acct-detail-row">
+                        <div class="acct-detail-label"><strong>First Name</strong></div>
+                        <div class="acct-detail-field"><input class="acct-input" type="text" [(ngModel)]="firstNameModel" /><button class="acct-update-btn">UPDATE</button></div>
+                    </div>
+                    <div class="acct-detail-row">
+                        <div class="acct-detail-label"><strong>Last Name</strong></div>
+                        <div class="acct-detail-field"><input class="acct-input" type="text" [(ngModel)]="lastNameModel" /><button class="acct-update-btn">UPDATE</button></div>
+                    </div>
+                    <div class="acct-detail-row">
+                        <div class="acct-detail-label"><strong>Mobile</strong></div>
+                        <div class="acct-detail-field"><input class="acct-input" type="tel" [(ngModel)]="mobileModel" /><button class="acct-update-btn">UPDATE</button></div>
+                    </div>
+                    <div class="acct-detail-row">
+                        <div class="acct-detail-label"><strong>Date of Birth</strong></div>
+                        <div class="acct-detail-field"><input class="acct-input" type="date" [(ngModel)]="dobModel" /><button class="acct-update-btn">UPDATE</button></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ── CHANGE BILLING ADDRESS ── -->
+            <div *ngIf="activeSection==='billing'">
+                <h1 class="acct-content-title">CHANGE BILLING ADDRESS</h1>
+                <div class="acct-content-divider"></div>
+                <p class="acct-content-desc">Your billing address is used for payment verification.</p>
+                <div class="acct-detail-section">
+                    <div class="acct-detail-row">
+                        <div class="acct-detail-label"><strong>House No. / Name</strong></div>
+                        <div class="acct-detail-field"><input class="acct-input" type="text" /><button class="acct-update-btn">UPDATE</button></div>
+                    </div>
+                    <div class="acct-detail-row">
+                        <div class="acct-detail-label"><strong>Postcode</strong></div>
+                        <div class="acct-detail-field"><input class="acct-input" type="text" /><button class="acct-update-btn">FIND</button></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ── DELIVERY ADDRESSES ── -->
+            <div *ngIf="activeSection==='addresses'">
+                <h1 class="acct-content-title">DELIVERY ADDRESS</h1>
+                <div class="acct-content-divider"></div>
+                <div class="addr-loading" *ngIf="addrLoading"><span><i class="fa-light fa-spinner-third fa-spin"></i></span> Loading...</div>
+                <ng-container *ngIf="!addrLoading && !showAddrForm">
+                    <div class="addr-header">
+                        <span class="addr-header-title">My Addresses</span>
+                        <button class="addr-add-btn" (click)="openAddForm()">ADD NEW ADDRESS</button>
+                    </div>
+                    <div class="addr-empty" *ngIf="addresses.length===0"><p>No saved addresses yet.</p></div>
+                    <div class="addr-list" *ngIf="addresses.length>0">
+                        <div class="addr-card" *ngFor="let addr of addresses" [class.addr-default]="addr.isDefault">
+                            <div class="addr-card-head">
+                                <span class="addr-default-badge" *ngIf="addr.isDefault"><span><i class="fa-light fa-circle-check"></i></span> Default</span>
+                                <div class="addr-card-actions">
+                                    <button class="addr-action-btn" (click)="openEditForm(addr)">Edit</button>
+                                    <button class="addr-action-btn" *ngIf="!addr.isDefault" (click)="setDefaultAddress(addr.id)">Set Default</button>
+                                    <button class="addr-action-btn addr-delete-btn" (click)="deleteAddress(addr.id)">Remove</button>
+                                </div>
+                            </div>
+                            <div class="addr-card-body">
+                                <p><strong>{{ addr.firstName }} {{ addr.lastName }}</strong></p>
+                                <p>{{ addr.line1 }}<span *ngIf="addr.line2">, {{ addr.line2 }}</span></p>
+                                <p *ngIf="addr.city">{{ addr.city }}<span *ngIf="addr.county">, {{ addr.county }}</span></p>
+                                <p>{{ addr.postcode | uppercase }}, {{ addr.country }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </ng-container>
+                <div class="addr-form-wrap" *ngIf="showAddrForm">
+                    <h2 class="addr-form-title">{{ editingAddrId ? 'Edit Address' : 'Add New Address' }}</h2>
+                    <div class="addr-error" *ngIf="addrError"><span><i class="fa-light fa-circle-exclamation"></i></span> {{ addrError }}</div>
+                    <div class="addr-form-grid">
+                        <div class="addr-field"><label class="addr-label">First Name *</label><input class="addr-input" type="text" [(ngModel)]="addrForm.firstName" /></div>
+                        <div class="addr-field"><label class="addr-label">Last Name *</label><input class="addr-input" type="text" [(ngModel)]="addrForm.lastName" /></div>
+                        <div class="addr-field addr-field-full"><label class="addr-label">House No. / Name *</label><input class="addr-input" type="text" [(ngModel)]="addrForm.line1" /></div>
+                        <div class="addr-field addr-field-full"><label class="addr-label">Address Line 2</label><input class="addr-input" type="text" [(ngModel)]="addrForm.line2" /></div>
+                        <div class="addr-field"><label class="addr-label">Town / City</label><input class="addr-input" type="text" [(ngModel)]="addrForm.city" /></div>
+                        <div class="addr-field"><label class="addr-label">County</label><input class="addr-input" type="text" [(ngModel)]="addrForm.county" /></div>
+                        <div class="addr-field"><label class="addr-label">Postcode *</label><input class="addr-input" type="text" [(ngModel)]="addrForm.postcode" /></div>
+                        <div class="addr-field"><label class="addr-label">Phone</label><input class="addr-input" type="tel" [(ngModel)]="addrForm.phone" /></div>
+                        <div class="addr-field addr-field-full"><label class="addr-checkbox-label"><input type="checkbox" [(ngModel)]="addrForm.isDefault" /><span>Set as default delivery address</span></label></div>
+                    </div>
+                    <div class="addr-form-footer">
+                        <button class="addr-cancel-btn" (click)="cancelAddrForm()">CANCEL</button>
+                        <button class="addr-save-btn" (click)="saveAddress()" [disabled]="addrSaving">{{ addrSaving ? 'SAVING...' : (editingAddrId ? 'UPDATE ADDRESS' : 'SAVE ADDRESS') }}</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ── RETURNS ── -->
+            <div *ngIf="activeSection==='returns'">
+                <h1 class="acct-content-title">RETURNS</h1>
+                <div class="acct-content-divider"></div>
+                <p class="acct-content-desc">Choose how you would like to return your items.</p>
+                <div class="returns-options">
+                    <button class="returns-option-btn" (click)="setSection('collection')">Arrange A Collection</button>
+                    <button class="returns-option-btn" (click)="setSection('label')">Replacement Label</button>
+                </div>
+            </div>
+
+            <!-- ── ARRANGE A COLLECTION ── -->
+            <div *ngIf="activeSection==='collection'">
+                <h1 class="acct-content-title">ARRANGE A COLLECTION</h1>
+                <div class="acct-content-divider"></div>
+                <div class="returns-info-box">
+                    <p><strong>Store Returns – Do You Know?</strong><br />
+                    Store returns are <strong>FREE</strong> and you will get your refund sooner. All you have to do is take your item to your nearest store and hand it over to a member of staff.</p>
+                </div>
+                <div class="returns-section">
+                    <h3 class="returns-section-title">Returning from Home</h3>
+                    <p class="acct-content-desc">The collection will be <strong>arranged from your billing address</strong>. A <strong>£2.50 returns charge</strong> will be applied for each collection/return.</p>
+                    <div class="returns-form">
+                        <div class="returns-field">
+                            <label class="addr-label">Choose Preferred Day:</label>
+                            <select class="returns-select">
+                                <option>Please select a Day</option>
+                                <option>Monday</option><option>Tuesday</option><option>Wednesday</option>
+                                <option>Thursday</option><option>Friday</option>
+                            </select>
+                        </div>
+                        <div class="returns-field">
+                            <label class="addr-label">Pick Up Instructions:</label>
+                            <select class="returns-select"><option>None</option><option>Leave with neighbour</option><option>Leave in safe place</option></select>
+                        </div>
+                    </div>
+                    <button class="acct-update-btn" style="height:48px;padding:0 28px;margin-top:16px">ARRANGE HOME COLLECTION</button>
+                </div>
+            </div>
+
+            <!-- ── REPLACEMENT LABEL ── -->
+            <div *ngIf="activeSection==='label'">
+                <h1 class="acct-content-title">REPLACEMENT LABEL</h1>
+                <div class="acct-content-divider"></div>
+                <p class="acct-content-desc">Request a replacement returns label for your order.</p>
+                <button class="acct-update-btn" style="height:48px;padding:0 28px">REQUEST LABEL</button>
+            </div>
+
+            <!-- ── 2FA ── -->
+            <div *ngIf="activeSection==='2fa'">
+                <h1 class="acct-content-title">2-FACTOR AUTHENTICATION</h1>
+                <div class="acct-content-divider"></div>
+                <p class="acct-content-desc">Add an extra layer of security to your account.</p>
+                <div class="acct-detail-section">
+                    <div class="acct-detail-row">
+                        <div class="acct-detail-label"><strong>Status</strong><p>2-Factor Authentication is currently disabled.</p></div>
+                        <div class="acct-detail-field"><button class="acct-update-btn">ENABLE</button></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ── REQUEST A CALL BACK ── -->
+            <div *ngIf="activeSection==='callback'">
+                <h1 class="acct-content-title">REQUEST A CALL BACK</h1>
+                <div class="acct-content-divider"></div>
+                <p class="acct-content-desc">Our customer services team will call you back at a time that suits you.</p>
+                <div class="acct-detail-section">
+                    <div class="acct-detail-row">
+                        <div class="acct-detail-label"><strong>Phone Number</strong></div>
+                        <div class="acct-detail-field"><input class="acct-input" type="tel" [value]="customer?.mobile || ''" /><button class="acct-update-btn">REQUEST</button></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ── FAVOURITES ── -->
+            <div *ngIf="activeSection==='favourites'">
+                <h1 class="acct-content-title">MY FAVOURITES</h1>
+                <div class="acct-content-divider"></div>
+                <p class="acct-content-desc">Your saved items will appear here.</p>
+                <a routerLink="/wishlist" class="acct-view-fav-btn">VIEW MY FAVOURITES</a>
+            </div>
+
+        </main>
+    </div>
+</div>

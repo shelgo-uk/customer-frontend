@@ -1,0 +1,44 @@
+<!-- Loading -->
+<div class="policy-loading" *ngIf="isLoading">
+    <div class="policy-sk-title"></div>
+    <div class="policy-sk-sub"></div>
+    <div class="policy-sk-row" *ngFor="let s of [1,2,3,4,5]"></div>
+</div>
+
+<!-- Not found -->
+<div class="policy-notfound" *ngIf="!isLoading && !policy">
+    <p>Policy not found.</p>
+</div>
+
+<!-- Policy content -->
+<div class="policy-page" *ngIf="!isLoading && policy">
+
+    <div class="policy-header">
+        <h1 class="policy-title">{{ policy.title }}</h1>
+        <p class="policy-updated" *ngIf="policy.lastUpdated">
+            Last Updated <strong>{{ policy.lastUpdated }}</strong>
+        </p>
+    </div>
+
+    <div class="policy-body">
+        <div class="policy-accordion" *ngFor="let sec of sections; let i = index">
+            <button class="policy-acc-btn" (click)="toggle(i)" [class.open]="isOpen(i)">
+                <span class="policy-acc-heading">{{ sec.heading }}</span>
+                <span class="policy-acc-icon">
+                    <svg *ngIf="isOpen(i)" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2" stroke-linecap="round" width="16" height="16">
+                        <polyline points="18 15 12 9 6 15"/>
+                    </svg>
+                    <svg *ngIf="!isOpen(i)" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2" stroke-linecap="round" width="16" height="16">
+                        <polyline points="6 9 12 15 18 9"/>
+                    </svg>
+                </span>
+            </button>
+            <div class="policy-acc-body" *ngIf="isOpen(i)">
+                <div class="policy-acc-content" [innerHTML]="sec.content"></div>
+            </div>
+        </div>
+    </div>
+
+</div>

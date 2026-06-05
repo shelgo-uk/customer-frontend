@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Loading...</title>
+  <base href="/">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v6.5.1/css/all.css">
+
+  <style>
+    #app-shell-loader {
+      position: fixed;
+      inset: 0;
+      z-index: 99999;
+      background: #fff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      font-family: 'Inter', -apple-system, sans-serif;
+      transition: opacity 0.25s ease, visibility 0.25s ease;
+    }
+    #app-shell-loader.hidden {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+    .shell-progress {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 2px;
+      background: #1c1c1c;
+      animation: shell-progress 1.6s ease-in-out infinite;
+      z-index: 100000;
+    }
+    @keyframes shell-progress {
+      0%   { width: 0%; }
+      60%  { width: 75%; }
+      100% { width: 100%; }
+    }
+    .shell-header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 56px;
+      background: #fff;
+      border-bottom: 1px solid #e8e8e8;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .shell-header-logo {
+      width: 80px;
+      height: 20px;
+      background: linear-gradient(90deg, #ebebeb 25%, #f5f5f5 50%, #ebebeb 75%);
+      background-size: 200% 100%;
+      animation: sk 1.2s infinite;
+      border-radius: 3px;
+    }
+    @keyframes sk {
+      0%   { background-position: 200% 0; }
+      100% { background-position: -200% 0; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ══ APP SHELL — visible instantly, before Angular loads ══ -->
+  <div id="app-shell-loader">
+    <!-- Top progress bar -->
+    <div class="shell-progress"></div>
+    <!-- Skeleton header -->
+    <div class="shell-header">
+      <div class="shell-header-logo"></div>
+    </div>
+  </div>
+
+  <!-- Angular app mounts here -->
+  <app-root></app-root>
+
+  <script>
+    // Hide the shell loader as soon as Angular's app-root has content
+    (function() {
+      var loader = document.getElementById('app-shell-loader');
+      if (!loader) return;
+
+      // Use MutationObserver to detect when app-root gets children
+      var appRoot = document.querySelector('app-root');
+      if (!appRoot) return;
+
+      var observer = new MutationObserver(function() {
+        if (appRoot.children.length > 0) {
+          loader.classList.add('hidden');
+          // Remove from DOM after fade out
+          setTimeout(function() {
+            if (loader.parentNode) loader.parentNode.removeChild(loader);
+          }, 350);
+          observer.disconnect();
+        }
+      });
+
+      observer.observe(appRoot, { childList: true, subtree: false });
+
+      // Fallback: hide after 4s no matter what
+      setTimeout(function() {
+        loader.classList.add('hidden');
+        observer.disconnect();
+      }, 4000);
+    })();
+  </script>
+
+</body>
+</html>

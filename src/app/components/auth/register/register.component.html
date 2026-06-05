@@ -1,0 +1,147 @@
+<!-- ══ SUCCESS SCREEN ══ -->
+<div class="auth-page" *ngIf="registered">
+    <div class="reg-success">
+
+        <h1 class="reg-success-title">Welcome to {{ siteName }}</h1>
+
+        <p class="reg-success-thanks"><strong>Thank you for registering.</strong></p>
+
+        <p class="reg-success-body">
+            Enjoy shopping the latest fashion, homeware and brands with amazing next day delivery*
+            and no fuss returns. Have your order delivered to an address to suit you, or click and collect
+            to your local {{ siteName }} store.
+        </p>
+
+        <p class="reg-success-body">
+            As well as great delivery options, you can view order summaries, arrange courier returns,
+            update your contact information and amend security details, all in one place.
+        </p>
+
+        <p class="reg-success-note">
+            * Next day delivery and delivery times are subject to courier areas, courier availability and stock availability.
+            Other exceptions apply. For full details of applicable Terms, Conditions and Exceptions please see
+            <a routerLink="/terms"><strong>Terms &amp; Conditions</strong></a>.
+        </p>
+
+        <a routerLink="/shop" class="reg-success-btn">SHOP NOW</a>
+
+    </div>
+</div>
+
+<!-- ══ REGISTER FORM ══ -->
+<div class="auth-page" *ngIf="!registered">
+    <div class="reg-container">
+
+        <!-- ── Mobile top bar ── -->
+        <!-- <div class="auth-mobile-bar">
+            <a routerLink="/" class="auth-back-btn" aria-label="Back to home">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round" width="20" height="20">
+                    <polyline points="15 18 9 12 15 6"/>
+                </svg>
+            </a>
+            <span class="auth-mobile-title">Express Checkout</span>
+            <span class="auth-mobile-spacer"></span>
+        </div>
+        <p class="reg-subtitle">Required Fields <sup>*</sup></p> -->
+
+        <!-- Error -->
+        <div class="auth-error" *ngIf="errorMsg">
+            <span><i class="fa-light fa-circle-exclamation"></i></span>
+            {{ errorMsg }}
+        </div>
+
+        <div class="reg-form">
+
+            <!-- Title -->
+            <div class="reg-field">
+                <label class="reg-label">Select Title</label>
+                <select class="reg-select" [(ngModel)]="model.title">
+                    <option value="">Select Title</option>
+                    <option *ngFor="let t of titles" [value]="t">{{ t }}</option>
+                </select>
+            </div>
+
+            <!-- First Name -->
+            <div class="reg-field">
+                <label class="reg-label">First Name <sup>*</sup></label>
+                <input class="reg-input" type="text" placeholder="First Name" [(ngModel)]="model.firstName" />
+            </div>
+
+            <!-- Last Name -->
+            <div class="reg-field">
+                <label class="reg-label">Last Name <sup>*</sup></label>
+                <input class="reg-input" type="text" placeholder="Last Name" [(ngModel)]="model.lastName" />
+            </div>
+
+            <!-- Email -->
+            <div class="reg-field">
+                <label class="reg-label">Email <sup>*</sup></label>
+                <input class="reg-input" type="email" placeholder="Email Address" [(ngModel)]="model.email" />
+            </div>
+
+            <!-- Password -->
+            <div class="reg-field">
+                <label class="reg-label">Password <sup>*</sup></label>
+                <div class="auth-input-wrap">
+                    <input class="reg-input" [type]="passVisible ? 'text' : 'password'"
+                        placeholder="Password" [(ngModel)]="model.password" />
+                    <button class="auth-show-btn" type="button" (click)="passVisible = !passVisible">
+                        {{ passVisible ? 'HIDE' : 'SHOW' }}
+                    </button>
+                </div>
+                <small class="reg-hint">Password must be 6-12 characters and include letters and numbers.</small>
+            </div>
+
+            <!-- Date of Birth -->
+            <div class="reg-field">
+                <label class="reg-label">Date Of Birth <sup>*</sup></label>
+                <input class="reg-input" type="date" [(ngModel)]="model.dateOfBirth" />
+                <small class="reg-hint">Age must be at least 18 years old.</small>
+            </div>
+
+            <!-- Mobile -->
+            <div class="reg-field">
+                <label class="reg-label">Contact Telephone <sup>*</sup></label>
+                <input class="reg-input" type="tel" placeholder="Mobile Number" [(ngModel)]="model.mobile" />
+                <small class="reg-hint">If we need to contact you we will be using this number.</small>
+            </div>
+
+            <!-- Marketing -->
+            <div class="reg-marketing">
+                <p class="reg-marketing-title">
+                    Don't Miss Out! Get our latest news on upcoming sales, offers, promotions and store events – plus your chance to get exclusive access to the {{ siteName }} Sale. Tick the relevant box if you want to receive marketing information from {{ siteName }}.
+                </p>
+                <div class="reg-checkboxes">
+                    <label class="reg-checkbox">
+                        <input type="checkbox" [(ngModel)]="model.marketingPost" />
+                        <span class="reg-checkbox-label">Post</span>
+                    </label>
+                    <label class="reg-checkbox">
+                        <input type="checkbox" [(ngModel)]="model.marketingSms" />
+                        <span class="reg-checkbox-label">SMS</span>
+                    </label>
+                    <label class="reg-checkbox">
+                        <input type="checkbox" [(ngModel)]="model.marketingEmail" />
+                        <span class="reg-checkbox-label">Email</span>
+                    </label>
+                </div>
+                <p class="reg-marketing-note">
+                    You can ask us to stop at any time using the unsubscribe link in all of our messages or by changing your preferences in 'My Account'. To find out more, see our <a routerLink="/privacy-policy">Privacy and Cookie Policy</a>.
+                </p>
+            </div>
+
+            <!-- Terms -->
+            <p class="reg-terms">
+                By clicking 'Great, Register My Account' you agree to the <a routerLink="/terms">Terms and Conditions</a>. To find out how we process your personal data, see our <a routerLink="/privacy-policy">Privacy and Cookie Policy</a>.
+            </p>
+
+            <!-- Submit -->
+            <button class="reg-submit-btn" (click)="submit()" [disabled]="isSubmitting">
+                {{ isSubmitting ? 'CREATING ACCOUNT...' : 'GREAT, REGISTER MY ACCOUNT' }}
+            </button>
+
+        </div>
+
+    </div>
+</div>

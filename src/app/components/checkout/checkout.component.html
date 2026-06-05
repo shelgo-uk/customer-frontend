@@ -1,0 +1,378 @@
+<div class="co-page">
+  <div class="co-wrap">
+
+    <!-- ══ STEP 1: DELIVERY ══ -->
+    <ng-container *ngIf="step === 1">
+
+      <!-- Page title -->
+      <h1 class="co-title">Delivery</h1>
+
+      <!-- Total bar -->
+      <div class="co-total-bar">
+        <span class="co-total-label">Total (Incl. Delivery: {{ currency }}{{ deliveryCharge.toFixed(2) }})</span>
+        <span class="co-total-val">{{ currency }}{{ total.toFixed(2) }}</span>
+      </div>
+
+      <!-- Next Unlimited promo -->
+      <!-- <div class="co-unlimited-bar">
+        <div class="co-unlimited-text">
+          <p>Enjoy free delivery for just £22.50 per year with <strong class="co-unlimited-brand">NEXT UNLIMITED</strong>*</p>
+          <p class="co-unlimited-note">*T&amp;Cs apply, excludes 2 person furniture delivery</p>
+        </div>
+        <button class="co-unlimited-btn">ADD TO BAG</button>
+      </div> -->
+
+      <!-- Delivery method tabs -->
+      <div class="co-tabs">
+        <button class="co-tab co-tab-active">
+          <span class="co-tab-main">Home Delivery</span>
+          <span class="co-tab-sub">{{ currency }}{{ deliveryCharge.toFixed(2) }}</span>
+        </button>
+        <button class="co-tab co-tab-disabled" disabled>
+          <span class="co-tab-main">Collection</span>
+          <span class="co-tab-sub">Unavailable</span>
+        </button>
+      </div>
+
+      <!-- Deliver To -->
+      <div class="co-section">
+        <div class="co-deliver-head">
+          <span class="co-deliver-label">Deliver To</span>
+        </div>
+        <div class="co-deliver-loading" *ngIf="addrLoading">Loading addresses...</div>
+        <div class="co-deliver-empty" *ngIf="!addrLoading && addresses.length === 0">
+          No saved addresses.
+          <a routerLink="/account" [queryParams]="{section:'addresses'}" class="co-link">Add an address</a>
+        </div>
+        <ng-container *ngIf="!addrLoading && addresses.length > 0">
+          <p class="co-deliver-addr">{{ formatAddress(selectedAddress) }}</p>
+          <div class="co-addr-list" *ngIf="addresses.length > 1">
+            <div class="co-addr-item" *ngFor="let addr of addresses"
+              [class.co-addr-selected]="selectedAddress?.id === addr.id"
+              (click)="selectedAddress = addr">
+              <span class="co-radio" [class.co-radio-on]="selectedAddress?.id === addr.id"></span>
+              <span>{{ formatAddress(addr) }}</span>
+            </div>
+          </div>
+        </ng-container>
+        <a routerLink="/account" [queryParams]="{section:'addresses'}" class="co-link co-add-addr">Add New Address</a>
+      </div>
+
+      <!-- Parcel accordion -->
+      <div class="co-accordion">
+        <button class="co-accordion-btn" (click)="parcelAccordionOpen = !parcelAccordionOpen">
+          <span class="co-accordion-left">
+            <span class="co-parcel-icon"><i class="fa-light fa-house"></i></span>
+            <span>Parcel 1 of 1 <span class="co-parcel-count">({{ itemCount }} item{{ itemCount !== 1 ? 's' : '' }})</span></span>
+          </span>
+          <span class="co-accordion-chev">
+            <i [class]="parcelAccordionOpen ? 'fa-light fa-chevron-up' : 'fa-light fa-chevron-down'"></i>
+          </span>
+        </button>
+        <div class="co-accordion-body" *ngIf="parcelAccordionOpen">
+          <div class="co-parcel-item" *ngFor="let item of items">
+            <img [src]="item.image" [alt]="item.name" class="co-parcel-img" />
+            <div class="co-parcel-info">
+              <p class="co-parcel-name">{{ item.name }}</p>
+              <p class="co-parcel-opt" *ngFor="let opt of getOptionEntries(item.selectedOptions)">
+                {{ opt.key }}: {{ opt.value }}
+              </p>
+              <p class="co-parcel-qty">Qty: {{ item.quantity }}</p>
+            </div>
+            <span class="co-parcel-price">{{ currency }}{{ ((item.salePrice ?? item.price) * item.quantity).toFixed(2) }}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Delivery item row -->
+      <div class="co-delivery-row">
+        <div class="co-delivery-left">
+          <span class="co-delivery-name">Standard Delivery</span>
+          <span class="co-delivery-stock">In Stock</span>
+        </div>
+        <span class="co-delivery-price">{{ currency }}{{ deliveryCharge.toFixed(2) }}</span>
+      </div>
+
+      <!-- Date picker -->
+      <div class="co-date-section">
+        <div class="co-date-month-row">
+          <span class="co-date-month">{{ currentMonthLabel }}</span>
+          <button class="co-date-next-btn" (click)="nextWeek()">
+            <i class="fa-light fa-chevron-right"></i>
+          </button>
+        </div>
+        <div class="co-date-grid">
+          <div class="co-date-cell" *ngFor="let d of deliveryDates"
+            [class.co-date-selected]="selectedDate === d.dateStr"
+            [class.co-date-unavailable]="d.unavailable"
+            (click)="!d.unavailable && selectDate(d.dateStr)">
+            <span class="co-date-day">{{ d.label }}</span>
+            <span class="co-date-num">{{ d.date.getDate() }}</span>
+            <div class="co-date-slash" *ngIf="d.unavailable"></div>
+          </div>
+        </div>
+        <div class="co-timeslot">
+          <label class="co-radio-label" (click)="selectedTimeslot='morning'">
+            <span class="co-radio" [class.co-radio-on]="selectedTimeslot==='morning'"></span>
+            <span>7:30am–6pm</span>
+          </label>
+        </div>
+        <div class="co-timeslot">
+          <label class="co-radio-label" (click)="selectedTimeslot='contact'">
+            <span class="co-radio" [class.co-radio-on]="selectedTimeslot==='contact'"></span>
+            <span>The date(s) displayed are not suitable. Please contact me to arrange delivery.</span>
+          </label>
+        </div>
+      </div>
+
+      <!-- Contact number -->
+      <div class="co-contact-section">
+        <p class="co-contact-title">Contact Number for your Delivery</p>
+        <p class="co-contact-desc">This number must belong to the account holder. If you prefer to receive updates for this order on a different number, please contact our customer services team on 03337778999.</p>
+        <input class="co-contact-input" type="tel" placeholder="Enter a Contact Number" [(ngModel)]="contactPhone" />
+      </div>
+
+      <!-- Divider -->
+      <div class="co-divider"></div>
+
+      <!-- Terms -->
+      <p class="co-terms">
+        By continuing to payment you confirm that you have read, understood and accept our
+        <a routerLink="/policy/terms-conditions" class="co-link">Terms &amp; Conditions</a>.
+      </p>
+
+      <!-- Continue button -->
+      <button class="co-cta-btn"
+        [disabled]="!contactPhone.trim() || !selectedAddress"
+        (click)="continueToPayment()">
+        CONTINUE TO PAYMENT
+      </button>
+
+      <!-- Footer notes -->
+      <div class="co-footer-notes">
+        <p>To make your shopping experience as easy as possible, we will save this delivery option for the next time you place an order.</p>
+        <p>*Exceptions, <a routerLink="/policy/terms-conditions" class="co-link">Terms &amp; Conditions</a> apply. Excludes orders placed in store.</p>
+        <p>Next Day Delivery is subject to stock, courier availability and courier area.</p>
+      </div>
+
+      <!-- Your Order — always open -->
+      <div class="co-order-accordion">
+        <div class="co-order-acc-btn">
+          <span class="co-order-acc-title">Your Order</span>
+          <span class="co-accordion-chev"><i class="fa-light fa-chevron-up"></i></span>
+        </div>
+        <div class="co-order-acc-body">
+          <table class="co-order-table">
+            <thead>
+              <tr>
+                <th class="co-th-item" colspan="2">Item</th>
+                <th class="co-th-size">Size</th>
+                <th class="co-th-qty">Quantity</th>
+                <th class="co-th-price">Price</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of items">
+                <td class="co-td-img">
+                  <img [src]="item.image" [alt]="item.name" class="co-order-img" />
+                </td>
+                <td class="co-td-name">
+                  <span class="co-order-name">{{ item.name }}</span>
+                  <span class="co-order-stock">In Stock</span>
+                </td>
+                <td class="co-td-size">
+                  <span *ngFor="let opt of getOptionEntries(item.selectedOptions)">{{ opt.value }}</span>
+                  <span *ngIf="!item.selectedOptions || getOptionEntries(item.selectedOptions).length === 0">ONE</span>
+                </td>
+                <td class="co-td-qty">{{ item.quantity }}</td>
+                <td class="co-td-price">{{ currency }}{{ ((item.salePrice ?? item.price) * item.quantity).toFixed(2) }}</td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="co-order-totals">
+            <div class="co-order-total-row">
+              <span>Order Value</span>
+              <span>{{ currency }}{{ subtotal.toFixed(2) }}</span>
+            </div>
+            <div class="co-order-total-row co-order-grand-total">
+              <span>Total (Incl. Delivery: {{ currency }}{{ deliveryCharge.toFixed(2) }})</span>
+              <span>{{ currency }}{{ total.toFixed(2) }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </ng-container>
+
+    <!-- ══ STEP 2: PAYMENT ══ -->
+    <ng-container *ngIf="step === 2">
+
+      <h1 class="co-title">Payment</h1>
+
+      <!-- Order summary -->
+      <div class="co-pay-summary">
+        <div class="co-pay-summary-row">
+          <span>Order Value</span>
+          <span>{{ currency }}{{ subtotal.toFixed(2) }}</span>
+        </div>
+        <div class="co-pay-summary-row co-pay-summary-total">
+          <span>Total (Incl. Delivery: {{ currency }}{{ deliveryCharge.toFixed(2) }})</span>
+          <span>{{ currency }}{{ total.toFixed(2) }}</span>
+        </div>
+      </div>
+
+      <!-- Payment options -->
+      <div class="co-pay-options">
+
+        <!-- Razorpay — active, selectable -->
+        <div class="co-pay-row co-pay-row-active"
+             [class.co-pay-row-selected]="selectedPayment==='razorpay'"
+             (click)="selectedPayment='razorpay'">
+          <span class="co-radio" [class.co-radio-on]="selectedPayment==='razorpay'"></span>
+          <div class="co-pay-row-content">
+            <div class="co-pay-row-main">
+              <span class="co-pay-name">Razorpay</span>
+            </div>
+            <div class="co-pay-row-sub">Secure payment powered by Razorpay</div>
+          </div>
+          <div class="co-pay-row-logo co-pay-logo-razorpay">
+            <img src="assets/img/razorpay.svg" alt="Razorpay" class="co-rzp-logo" />
+          </div>
+        </div>
+
+        <!-- Credit / Debit Card — disabled -->
+        <div class="co-pay-row co-pay-row-disabled">
+          <span class="co-radio"></span>
+          <div class="co-pay-row-content">
+            <div class="co-pay-row-main">
+              <span class="co-pay-name">Credit / Debit Card</span>
+            </div>
+          </div>
+          <div class="co-pay-row-logo">
+            <svg viewBox="0 0 24 16" fill="none" stroke="currentColor" stroke-width="1.5" width="28" height="20">
+              <rect x="1" y="1" width="22" height="14" rx="2"/>
+              <line x1="1" y1="5" x2="23" y2="5"/>
+              <line x1="4" y1="10" x2="8" y2="10"/>
+            </svg>
+          </div>
+        </div>
+
+        <!-- PayPal — disabled -->
+        <div class="co-pay-row co-pay-row-disabled">
+          <span class="co-radio"></span>
+          <div class="co-pay-row-content">
+            <div class="co-pay-row-main">
+              <span class="co-pay-name">PayPal™</span>
+            </div>
+          </div>
+          <div class="co-pay-row-logo">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="#003087">
+              <path d="M7.076 21.337H2.47a.641.641 0 01-.633-.74L4.944.901C5.026.382 5.474 0 5.998 0h7.46c2.57 0 4.578.543 5.69 1.81 1.01 1.15 1.304 2.42 1.012 4.287-.023.143-.047.288-.077.437-.983 5.05-4.349 6.797-8.647 6.797h-2.19c-.524 0-.968.382-1.05.9l-1.12 7.106zm14.146-14.42a3.35 3.35 0 00-.607-.541c-.013.076-.026.175-.041.254-.59 3.025-2.566 6.082-8.558 6.082H9.828l-1.17 7.415h3.49l.924-5.858h2.19c4.298 0 7.664-1.747 8.647-6.797.29-1.49.09-2.71-.687-3.555z"/>
+            </svg>
+          </div>
+        </div>
+
+        <!-- Google Pay — disabled -->
+        <div class="co-pay-row co-pay-row-disabled">
+          <span class="co-radio"></span>
+          <div class="co-pay-row-content">
+            <div class="co-pay-row-main">
+              <span class="co-pay-name">Google Pay</span>
+            </div>
+          </div>
+          <div class="co-pay-row-logo">
+            <span class="co-gpay-badge">G Pay</span>
+          </div>
+        </div>
+
+        <!-- Giftcard — disabled -->
+        <div class="co-pay-row co-pay-row-disabled">
+          <span class="co-radio"></span>
+          <div class="co-pay-row-content">
+            <div class="co-pay-row-main">
+              <span class="co-pay-name">Giftcard / eVoucher</span>
+            </div>
+          </div>
+          <div class="co-pay-row-logo">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="24" height="24">
+              <rect x="2" y="6" width="20" height="14" rx="2"/>
+              <path d="M12 6V4a2 2 0 00-4 0v2"/>
+              <path d="M12 6V4a2 2 0 014 0v2"/>
+              <line x1="12" y1="6" x2="12" y2="20"/>
+            </svg>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Legal text -->
+      <div class="co-pay-legal">
+        <p>We will request payment for the full amount on completion of your order. By selecting a payment option you confirm that you have read, understood and accept our <a routerLink="/policy/terms-conditions" class="co-link">Terms &amp; Conditions</a>, <a routerLink="/policy/return-refund-policy" class="co-link">Returns Policy</a> and <a routerLink="/policy/privacy-policy" class="co-link">Privacy Policy</a>.</p>
+        <p><strong>*Credit subject to status.</strong> UK residents aged 18 and over. See our <a routerLink="/policy/terms-conditions" class="co-link">Terms &amp; Conditions</a> for more information (or 0333 777 8733. For call charges contact your service provider). Please note only one credit product is available per customer.</p>
+        <p>**The Credit Limit may be lower than your order value. You will be asked to pay for any excess at the time of your order.</p>
+        <p>^If you only make the Minimum Payment each month, it will take longer and cost more to repay your balance.</p>
+        <p>{{ siteName }} Online is a trading name of {{ siteName }} Retail Ltd.</p>
+      </div>
+
+      <!-- Pay button -->
+      <button class="co-cta-btn" [disabled]="isProcessing || !selectedPayment" (click)="payNow()">
+        <span *ngIf="!isProcessing">PAY NOW — {{ currency }}{{ total.toFixed(2) }}</span>
+        <span *ngIf="isProcessing">
+          <span><i class="fa-light fa-spinner-third fa-spin"></i></span> Processing...
+        </span>
+      </button>
+
+      <!-- Back -->
+      <button class="co-back-btn" (click)="goBackToDelivery()">
+        <span><i class="fa-light fa-arrow-left"></i></span> Back to Delivery
+      </button>
+
+      <!-- Your Order — always open -->
+      <div class="co-order-accordion">
+        <div class="co-order-acc-btn">
+          <span class="co-order-acc-title">Your Order</span>
+          <span class="co-accordion-chev"><i class="fa-light fa-chevron-up"></i></span>
+        </div>
+        <div class="co-order-acc-body">
+          <table class="co-order-table">
+            <thead>
+              <tr>
+                <th class="co-th-item" colspan="2">Item</th>
+                <th class="co-th-size">Size</th>
+                <th class="co-th-qty">Quantity</th>
+                <th class="co-th-price">Price</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of items">
+                <td class="co-td-img"><img [src]="item.image" [alt]="item.name" class="co-order-img" /></td>
+                <td class="co-td-name">
+                  <span class="co-order-name">{{ item.name }}</span>
+                  <span class="co-order-stock">In Stock</span>
+                </td>
+                <td class="co-td-size">
+                  <span *ngFor="let opt of getOptionEntries(item.selectedOptions)">{{ opt.value }}</span>
+                  <span *ngIf="!item.selectedOptions || getOptionEntries(item.selectedOptions).length === 0">ONE</span>
+                </td>
+                <td class="co-td-qty">{{ item.quantity }}</td>
+                <td class="co-td-price">{{ currency }}{{ ((item.salePrice ?? item.price) * item.quantity).toFixed(2) }}</td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="co-order-totals">
+            <div class="co-order-total-row">
+              <span>Order Value</span>
+              <span>{{ currency }}{{ subtotal.toFixed(2) }}</span>
+            </div>
+            <div class="co-order-total-row co-order-grand-total">
+              <span>Total (Incl. Delivery: {{ currency }}{{ deliveryCharge.toFixed(2) }})</span>
+              <span>{{ currency }}{{ total.toFixed(2) }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </ng-container>
+
+  </div>
+</div>

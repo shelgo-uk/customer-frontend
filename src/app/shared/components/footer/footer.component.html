@@ -1,0 +1,131 @@
+<!-- ── PRE-FOOTER: BE IN THE KNOW ── -->
+<section class="pre-footer">
+    <div class="pre-footer-inner">
+
+        <!-- Envelope icon -->
+        <span class="pre-footer-icon">
+            <span><i class="fa-light fa-envelope-open-text"></i></span>
+        </span>
+
+        <!-- Title -->
+        <h2 class="pre-footer-title">BE IN THE KNOW</h2>
+
+        <!-- Description -->
+        <p class="pre-footer-desc">
+            Keep up to date with the latest Next news, including exclusive offers and not to be missed sale and store events.<br />
+            Enter your email address below to opt in to email marketing.
+        </p>
+
+        <!-- Form -->
+        <div class="pre-footer-form">
+            <label class="pre-footer-label" for="newsletter-email">Email Address</label>
+            <input
+                id="newsletter-email"
+                class="pre-footer-input"
+                type="email"
+                placeholder=""
+                [(ngModel)]="newsletterEmail"
+                (keyup.enter)="subscribeNewsletter()"
+            />
+            <button class="pre-footer-btn" type="button" (click)="subscribeNewsletter()">
+                SUBSCRIBE
+            </button>
+        </div>
+
+        <!-- Terms -->
+        <p class="pre-footer-terms">
+            See our <a routerLink="/policy/terms-conditions">Terms and Conditions</a> and <a routerLink="/policy/privacy-policy">Privacy Policy</a> to find out more.
+        </p>
+
+    </div>
+</section>
+
+<footer class="site-footer">
+
+    <!-- ── SOCIAL ROW ── -->
+    <div class="footer-social-row">
+        <p class="footer-social-label">Our Social Networks</p>
+        <div class="footer-social-icons">
+            @for(s of socialLinks; track s.label) {
+            <a [href]="s.url" target="_blank" rel="noopener" class="social-icon-btn" [attr.aria-label]="s.label">
+                <span><i [class]="s.icon"></i></span>
+            </a>
+            }
+        </div>
+    </div>
+
+    <!-- ── QUICK LINKS ROW (desktop) ── -->
+    <div class="footer-quick-row">
+        @for(q of quickLinks; track q.title) {
+        <a [routerLink]="q.url" class="footer-quick-item">
+            <span class="fq-icon">
+                <span><i [class]="q.icon"></i></span>
+            </span>
+            <span class="fq-text">
+                <span class="fq-title">{{ q.title }}</span>
+                <span class="fq-sub">{{ q.sub }}</span>
+            </span>
+        </a>
+        }
+    </div>
+
+    <!-- ── LINK COLUMNS (desktop) ── -->
+    <div class="footer-columns desktop-only">
+        @for(col of columns; track col.id) {
+        <div class="footer-col">
+            <p class="footer-col-heading">{{ col.heading }}</p>
+            <ul>
+                @for(link of col.links; track link.label) {
+                <li>
+                    @if($any(link).routerLink) {
+                        <a [routerLink]="link.url">{{ link.label }}</a>
+                    } @else {
+                        <a [href]="link.url">{{ link.label }}</a>
+                    }
+                    @if(link.sub) {
+                        <span class="link-sub">{{ link.sub }}</span>
+                    }
+                </li>
+                }
+            </ul>
+        </div>
+        }
+    </div>
+
+    <!-- ── ACCORDION (mobile) ── -->
+    <div class="footer-accordion mobile-only">
+        @for(col of columns; track col.id) {
+        <div class="accordion-item" [class.open]="isOpen(col.id)">
+            <button class="accordion-trigger" (click)="toggleSection(col.id)">
+                <span>{{ col.heading }}</span>
+                <span class="accordion-icon">
+                    <span><i [class]="isOpen(col.id) ? 'fa-light fa-chevron-up' : 'fa-light fa-chevron-down'"></i></span>
+                </span>
+            </button>
+            @if(isOpen(col.id)) {
+            <ul class="accordion-body">
+                @for(link of col.links; track link.label) {
+                <li>
+                    @if($any(link).routerLink) {
+                        <a [routerLink]="link.url">{{ link.label }}</a>
+                    } @else {
+                        <a [href]="link.url">{{ link.label }}</a>
+                    }
+                    @if(link.sub) {
+                        <span class="link-sub">{{ link.sub }}</span>
+                    }
+                </li>
+                }
+            </ul>
+            }
+        </div>
+        }
+    </div>
+
+    <!-- ── BOTTOM BAR ── -->
+    <div class="footer-bottom">
+        <a href="/mobile-site" class="footer-mobile-link">View mobile site</a>
+        <p class="footer-copy">&copy; {{ currentYear }} {{ siteName }} Retail Ltd. All rights reserved.</p>
+    </div>
+
+</footer>

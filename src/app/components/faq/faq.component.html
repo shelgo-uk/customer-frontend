@@ -1,0 +1,117 @@
+<div class="faq-page">
+
+  <!-- ── Contact Us bar ── -->
+  <div class="faq-contact-bar">
+    <a routerLink="/help/contact" class="faq-contact-link">
+      <span class="faq-contact-icon"><i class="fa-light fa-circle-info"></i></span>
+      <span><strong>Contact Us</strong> For all our contact details</span>
+      <span class="faq-contact-chev"><i class="fa-light fa-chevron-right"></i></span>
+    </a>
+  </div>
+
+  <!-- ══ HOME VIEW — category grid ══ -->
+  <div class="faq-home" *ngIf="view === 'home'">
+
+    <h1 class="faq-main-title">How can we help?</h1>
+
+    <!-- Loading -->
+    <div class="faq-loading" *ngIf="homeLoading">
+      <span><i class="fa-light fa-spinner-third fa-spin"></i></span>
+    </div>
+
+    <!-- Category grid -->
+    <div class="faq-cat-grid" *ngIf="!homeLoading">
+      <div class="faq-cat-card" *ngFor="let cat of categories"
+           [class.faq-cat-card-wide]="cat.articles?.length > 3"
+           (click)="goToCategory(cat)">
+        <div class="faq-cat-head">
+          <span class="faq-cat-icon" *ngIf="cat.icon">
+            <i [class]="cat.icon"></i>
+          </span>
+          <span class="faq-cat-name">{{ cat.name }}</span>
+          <span class="faq-cat-chev"><i class="fa-light fa-chevron-right"></i></span>
+        </div>
+        <div class="faq-cat-articles">
+          <span class="faq-cat-article" *ngFor="let art of cat.articles"
+                (click)="$event.stopPropagation(); goToArticle(art)">
+            {{ art.title }}
+          </span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ══ CATEGORY VIEW — article list ══ -->
+  <div class="faq-category" *ngIf="view === 'category'">
+
+    <!-- Breadcrumb -->
+    <div class="faq-breadcrumb">
+      <a class="faq-bc-link" (click)="goHome()">Help</a>
+      <span class="faq-bc-sep"><i class="fa-light fa-chevron-right"></i></span>
+      <span class="faq-bc-current">{{ selectedCategory?.name }}</span>
+    </div>
+
+    <h1 class="faq-cat-title">{{ selectedCategory?.name }}</h1>
+
+    <div class="faq-loading" *ngIf="catLoading">
+      <span><i class="fa-light fa-spinner-third fa-spin"></i></span>
+    </div>
+
+    <div class="faq-article-list" *ngIf="!catLoading">
+      <div class="faq-article-item" *ngFor="let art of categoryArticles"
+           (click)="goToArticle(art)">
+        <span>{{ art.title }}</span>
+        <span class="faq-article-chev"><i class="fa-light fa-chevron-right"></i></span>
+      </div>
+      <div class="faq-empty" *ngIf="categoryArticles.length === 0">
+        No articles in this category yet.
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ══ ARTICLE VIEW — sidebar + content ══ -->
+  <div class="faq-article-view" *ngIf="view === 'article'">
+
+    <!-- Breadcrumb -->
+    <div class="faq-breadcrumb">
+      <a class="faq-bc-link" (click)="goHome()">Help</a>
+      <span class="faq-bc-sep"><i class="fa-light fa-chevron-right"></i></span>
+      <a class="faq-bc-link" (click)="goToCategory(articleCategory)" *ngIf="articleCategory">
+        {{ articleCategory.name }}
+      </a>
+      <span class="faq-bc-sep" *ngIf="articleCategory"><i class="fa-light fa-chevron-right"></i></span>
+      <span class="faq-bc-current">{{ selectedArticle?.title }}</span>
+    </div>
+
+    <div class="faq-loading" *ngIf="articleLoading">
+      <span><i class="fa-light fa-spinner-third fa-spin"></i></span>
+    </div>
+
+    <div class="faq-article-layout" *ngIf="!articleLoading && selectedArticle">
+
+      <!-- Sidebar -->
+      <aside class="faq-sidebar">
+        <h3 class="faq-sidebar-title">Articles in this section</h3>
+        <div class="faq-sidebar-list">
+          <a class="faq-sidebar-link"
+             *ngFor="let art of siblingArticles"
+             [class.faq-sidebar-active]="art.id === selectedArticle.id"
+             (click)="goToArticle(art)">
+            {{ art.title }}
+          </a>
+        </div>
+      </aside>
+
+      <!-- Article content -->
+      <article class="faq-article-content">
+        <h1 class="faq-article-title">{{ selectedArticle.title }}</h1>
+        <div class="faq-article-body" [innerHTML]="selectedArticle.content"></div>
+      </article>
+
+    </div>
+
+  </div>
+
+</div>

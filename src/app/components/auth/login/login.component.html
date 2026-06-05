@@ -1,0 +1,77 @@
+<div class="auth-page">
+
+    <!-- ── Mobile top bar ── -->
+    <div class="auth-mobile-bar">
+        <a routerLink="/" class="auth-back-btn" aria-label="Back to home">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round" width="20" height="20">
+                <polyline points="15 18 9 12 15 6"/>
+            </svg>
+        </a>
+        <span class="auth-mobile-title">Sign In / Register</span>
+        <span class="auth-mobile-spacer"></span>
+    </div>
+
+    <div class="auth-layout">
+
+        <!-- ── LEFT: Existing Customers ── -->
+        <div class="auth-panel auth-panel-left">
+            <h1 class="auth-panel-title">EXISTING CUSTOMERS</h1>
+            <h2 class="auth-panel-sub">SIGN INTO {{ siteName | uppercase }}</h2>
+
+            <div class="auth-form">
+                <!-- Error -->
+                <div class="auth-error" *ngIf="errorMsg">
+                    <span><i class="fa-light fa-circle-exclamation"></i></span>
+                    {{ errorMsg }}
+                </div>
+
+                <!-- Email -->
+                <div class="auth-field">
+                    <label class="auth-label">Email Address or Customer Number</label>
+                    <div class="auth-input-wrap">
+                        <input class="auth-input" type="email" [(ngModel)]="model.email"
+                            (keyup.enter)="submit()" autocomplete="email" />
+                        <button class="auth-clear-btn" *ngIf="model.email" type="button"
+                            (click)="model.email = ''" aria-label="Clear">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" width="14" height="14">
+                                <line x1="18" y1="6" x2="6" y2="18"/>
+                                <line x1="6" y1="6" x2="18" y2="18"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Password -->
+                <div class="auth-field">
+                    <label class="auth-label">Your Password</label>
+                    <div class="auth-input-wrap">
+                        <input class="auth-input" [type]="passVisible ? 'text' : 'password'"
+                            [(ngModel)]="model.password" (keyup.enter)="submit()" autocomplete="current-password" />
+                        <button class="auth-show-btn" type="button" (click)="passVisible = !passVisible">
+                            {{ passVisible ? 'HIDE' : 'SHOW' }}
+                        </button>
+                    </div>
+                    <a routerLink="/forgot-password" class="auth-forgot">Forgotten Password</a>
+                </div>
+
+                <!-- Submit -->
+                <button class="auth-submit-btn" (click)="submit()" [disabled]="isSubmitting">
+                    {{ isSubmitting ? 'SIGNING IN...' : 'SIGN IN' }}
+                </button>
+            </div>
+        </div>
+
+        <!-- ── RIGHT: New Customers ── -->
+        <div class="auth-panel auth-panel-right">
+            <h1 class="auth-panel-title">NEW CUSTOMERS</h1>
+            <h2 class="auth-panel-sub">REGISTER WITH {{ siteName | uppercase }} TODAY</h2>
+            <p class="auth-panel-desc">
+                Create an account to enjoy a faster checkout, track your orders and manage your favourites.
+            </p>
+            <a routerLink="/register" class="auth-register-btn">REGISTER NOW</a>
+        </div>
+
+    </div>
+</div>

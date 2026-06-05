@@ -1,0 +1,140 @@
+<div class="contact-page">
+
+  <!-- ── Hero ── -->
+  <div class="contact-hero">
+    <h1 class="contact-hero-title">Contact Us</h1>
+    <p class="contact-hero-sub">We're here to help. Get in touch and we'll get back to you as soon as possible.</p>
+  </div>
+
+  <div class="contact-layout">
+
+    <!-- ── Left: Info cards ── -->
+    <aside class="contact-info">
+
+      <div class="contact-info-card">
+        <div class="contact-info-icon">
+          <span><i class="fa-light fa-phone"></i></span>
+        </div>
+        <div class="contact-info-body">
+          <h3 class="contact-info-title">Call Us</h3>
+          <p class="contact-info-val" *ngIf="siteMobile">{{ siteMobile }}</p>
+          <p class="contact-info-val" *ngIf="!siteMobile">0333 777 8000</p>
+          <p class="contact-info-note">Mon–Fri 8am–9pm<br/>Sat–Sun 8am–7pm</p>
+        </div>
+      </div>
+
+      <div class="contact-info-card">
+        <div class="contact-info-icon">
+          <span><i class="fa-light fa-envelope"></i></span>
+        </div>
+        <div class="contact-info-body">
+          <h3 class="contact-info-title">Email Us</h3>
+          <p class="contact-info-val" *ngIf="siteEmail">
+            <a [href]="'mailto:' + siteEmail" class="contact-email-link">{{ siteEmail }}</a>
+          </p>
+          <p class="contact-info-note">We aim to respond within 24 hours.</p>
+        </div>
+      </div>
+
+      <div class="contact-info-card">
+        <div class="contact-info-icon">
+          <span><i class="fa-light fa-circle-question"></i></span>
+        </div>
+        <div class="contact-info-body">
+          <h3 class="contact-info-title">Help Centre</h3>
+          <p class="contact-info-note">Find answers to common questions in our FAQ.</p>
+          <a routerLink="/help/faq" class="contact-faq-link">Browse FAQ <span><i class="fa-light fa-arrow-right"></i></span></a>
+        </div>
+      </div>
+
+      <div class="contact-info-card">
+        <div class="contact-info-icon">
+          <span><i class="fa-light fa-rotate-left"></i></span>
+        </div>
+        <div class="contact-info-body">
+          <h3 class="contact-info-title">Returns</h3>
+          <p class="contact-info-note">Need to return an item? Check our returns policy.</p>
+          <a routerLink="/policy/return-refund-policy" class="contact-faq-link">Returns Policy <span><i class="fa-light fa-arrow-right"></i></span></a>
+        </div>
+      </div>
+
+    </aside>
+
+    <!-- ── Right: Form ── -->
+    <main class="contact-form-wrap">
+
+      <!-- Success state -->
+      <div class="contact-success" *ngIf="submitted">
+        <div class="contact-success-icon">
+          <svg viewBox="0 0 52 52" fill="none" width="56" height="56">
+            <circle cx="26" cy="26" r="26" fill="#2e7d32"/>
+            <polyline points="14,27 22,35 38,18" stroke="#fff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <h2 class="contact-success-title">Message Sent!</h2>
+        <p class="contact-success-msg">Thank you for getting in touch. We'll get back to you within 24 hours.</p>
+        <button class="contact-submit-btn" (click)="reset()">Send Another Message</button>
+      </div>
+
+      <!-- Form -->
+      <form class="contact-form" *ngIf="!submitted" (ngSubmit)="submit()">
+        <h2 class="contact-form-title">Send us a message</h2>
+
+        <!-- Error -->
+        <div class="contact-error" *ngIf="errorMsg">
+          <span><i class="fa-light fa-circle-exclamation"></i></span>
+          {{ errorMsg }}
+        </div>
+
+        <div class="contact-form-grid">
+          <div class="contact-field">
+            <label class="contact-label">Full Name *</label>
+            <input class="contact-input" type="text" [(ngModel)]="form.name" name="name"
+                   placeholder="Your full name" />
+          </div>
+
+          <div class="contact-field">
+            <label class="contact-label">Email Address *</label>
+            <input class="contact-input" type="email" [(ngModel)]="form.email" name="email"
+                   placeholder="your@email.com" />
+          </div>
+
+          <div class="contact-field">
+            <label class="contact-label">Phone Number</label>
+            <input class="contact-input" type="tel" [(ngModel)]="form.phone" name="phone"
+                   placeholder="Optional" />
+          </div>
+
+          <div class="contact-field">
+            <label class="contact-label">Subject</label>
+            <select class="contact-input contact-select" [(ngModel)]="form.subject" name="subject">
+              <option value="">Select a subject</option>
+              <option *ngFor="let s of subjects" [value]="s">{{ s }}</option>
+            </select>
+          </div>
+
+          <div class="contact-field contact-field-full">
+            <label class="contact-label">Message *</label>
+            <textarea class="contact-input contact-textarea" [(ngModel)]="form.message" name="message"
+                      placeholder="How can we help you?" rows="6"></textarea>
+          </div>
+        </div>
+
+        <p class="contact-privacy-note">
+          By submitting this form you agree to our
+          <a routerLink="/policy/privacy-policy" class="contact-policy-link">Privacy Policy</a>.
+        </p>
+
+        <button class="contact-submit-btn" type="submit" [disabled]="isSubmitting">
+          <span *ngIf="!isSubmitting">SEND MESSAGE</span>
+          <span *ngIf="isSubmitting">
+            <span><i class="fa-light fa-spinner-third fa-spin"></i></span> Sending...
+          </span>
+        </button>
+      </form>
+
+    </main>
+
+  </div>
+
+</div>

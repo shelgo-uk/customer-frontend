@@ -1,0 +1,380 @@
+<!-- LOADING SKELETON -->
+<div class="pdp-page" *ngIf="isLoading">
+  <div class="pdp-layout">
+    <div class="pdp-gallery-col">
+      <div class="skeleton-main-img"></div>
+      <div class="skeleton-thumbs">
+        <div class="skeleton-thumb" *ngFor="let s of [1,2,3,4]"></div>
+      </div>
+    </div>
+    <div class="pdp-info-col">
+      <div class="skeleton-line w60 mb12"></div>
+      <div class="skeleton-line w40 mb12"></div>
+      <div class="skeleton-line w30 mb24"></div>
+      <div class="skeleton-line w80 mb8"></div>
+      <div class="skeleton-line w80 mb8"></div>
+      <div class="skeleton-line w60 mb24"></div>
+      <div class="skeleton-btn"></div>
+    </div>
+  </div>
+</div>
+
+<!-- NOT FOUND -->
+<div class="pdp-not-found" *ngIf="notFound && !isLoading">
+  <p>Product not found.</p>
+  <a routerLink="/shop">Back to Shop</a>
+</div>
+
+<!-- PRODUCT DETAIL -->
+<div class="pdp-page" *ngIf="product && !isLoading">
+  <div class="pdp-layout">
+
+    <!-- ══ LEFT: Gallery ══ -->
+    <div class="pdp-gallery-col">
+
+      <!-- ── DESKTOP: 2-column grid ── -->
+      <div class="pdp-grid-gallery desktop-gallery" *ngIf="product.images?.length > 0">
+        <div class="pdp-grid-item" *ngFor="let img of product.images; let i = index"
+          (click)="setActiveImage(i)">
+          <img [src]="img" [alt]="product.name + ' image ' + (i+1)" loading="lazy" />
+        </div>
+      </div>
+
+      <!-- ── MOBILE: Slider ── -->
+      <div class="pdp-mobile-slider mobile-gallery" *ngIf="product.images?.length > 0">
+        <!-- Slide -->
+        <div class="pdp-mobile-slide">
+          <img [src]="product.images[activeImageIdx]" [alt]="product.name" />
+        </div>
+
+        <!-- Arrows -->
+        <button class="pdp-slide-arrow pdp-slide-prev" (click)="prevImage()" aria-label="Previous image"
+          *ngIf="product.images.length > 1">
+          <span><i class="fa-light fa-chevron-left"></i></span>
+        </button>
+        <button class="pdp-slide-arrow pdp-slide-next" (click)="nextImage()" aria-label="Next image"
+          *ngIf="product.images.length > 1">
+          <span><i class="fa-light fa-chevron-right"></i></span>
+        </button>
+
+        <!-- Dots -->
+        <div class="pdp-slide-dots" *ngIf="product.images.length > 1">
+          <button class="pdp-slide-dot" *ngFor="let img of product.images; let i = index"
+            [class.active]="i === activeImageIdx"
+            (click)="setActiveImage(i)"
+            [attr.aria-label]="'Image ' + (i+1)">
+          </button>
+        </div>
+      </div>
+
+      <!-- No image fallback -->
+      <div class="pdp-img-placeholder" *ngIf="!product.images?.length">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#ccc" stroke-width="1.5" width="60" height="60">
+          <rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/>
+          <polyline points="21 15 16 10 5 21"/>
+        </svg>
+      </div>
+
+    </div>
+
+    <!-- ══ RIGHT: Info ══ -->
+    <div class="pdp-info-col">
+
+      <!-- ── TABS ── -->
+      <div class="pdp-tabs-bar">
+        <button class="pdp-tab-btn" [class.active]="activeTab === 'product'"
+          (click)="setTab('product')">
+          {{ product.categoryName || 'Product' }}
+        </button>
+        <button class="pdp-tab-btn" [class.active]="activeTab === 'more'"
+          (click)="setTab('more')">
+          More Like This
+        </button>
+      </div>
+
+      <!-- ══════════════════════════════════════════════════════════════════ -->
+      <!-- TAB 1: PRODUCT DETAILS                                            -->
+      <!-- ══════════════════════════════════════════════════════════════════ -->
+      <div class="pdp-tab-content" *ngIf="activeTab === 'product'">
+
+        <!-- Title + Price -->
+        <h1 class="pdp-title">{{product.name}}</h1>
+        <div class="pdp-price-row">
+          <span class="pdp-price-sale" *ngIf="product.salePrice">{{product.salePrice | currency:'GBP':'symbol':'1.2-2'}}</span>
+          <span class="pdp-price" [class.strikethrough]="product.salePrice">{{product.price | currency:'GBP':'symbol':'1.2-2'}}</span>
+        </div>
+
+        <!-- Rating -->
+        <div class="pdp-rating" *ngIf="product.reviewCount > 0">
+          <span class="pdp-stars">
+            <span *ngFor="let s of starArray" class="pdp-star" [class.filled]="s <= product.avgRating">★</span>
+          </span>
+          <span class="pdp-rating-val">{{product.avgRating | number:'1.1-1'}}</span>
+          <a class="pdp-review-link" href="#reviews">({{product.reviewCount}} Reviews)</a>
+        </div>
+
+        <!-- Stock -->
+        <div class="pdp-stock in-stock">In stock</div>
+
+        <!-- Variants -->
+        <div class="pdp-variants" *ngFor="let variant of product.variants">
+          <div class="pdp-variant-label">
+            {{variant.name}}: <strong>{{selectedOptions[variant.name]}}</strong>
+          </div>
+          <div class="pdp-variant-options">
+            <button *ngFor="let opt of variant.options"
+              class="pdp-variant-btn"
+              [class.selected]="selectedOptions[variant.name] === opt.label"
+              (click)="selectedOptions[variant.name] = opt.label">
+              {{opt.label}}
+            </button>
+          </div>
+        </div>
+
+        <!-- Add to Bag + Wishlist -->
+        <div class="pdp-cta-row">
+          <!-- Qty selector when already in cart -->
+          <div class="pdp-qty-ctrl" *ngIf="isInCart">
+            <button class="pdp-qty-btn" (click)="decrementAddQty()" [disabled]="addQty <= 1" aria-label="Decrease">
+              <span><i class="fa-light fa-minus"></i></span>
+            </button>
+            <span class="pdp-qty-val">{{ addQty }}</span>
+            <button class="pdp-qty-btn" (click)="incrementAddQty()" aria-label="Increase">
+              <span><i class="fa-light fa-plus"></i></span>
+            </button>
+          </div>
+
+          <button class="pdp-add-btn" [class.added]="addedToBag" (click)="addToBag()">
+            <ng-container *ngIf="!addedToBag">
+              {{ isInCart ? 'ADD MORE' : 'ADD TO BAG' }}
+            </ng-container>
+            <ng-container *ngIf="addedToBag">
+              <span><i class="fa-light fa-check"></i></span> ADDED
+            </ng-container>
+          </button>
+
+          <button class="pdp-wish-btn" [class.fav-active]="isFav" (click)="toggleFav()" aria-label="Add to wishlist">
+            <svg viewBox="0 0 24 24" [attr.fill]="isFav ? '#c8102e' : 'none'" [attr.stroke]="isFav ? '#c8102e' : 'currentColor'" stroke-width="1.8" width="20" height="20">
+              <path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/>
+            </svg>
+          </button>
+        </div>
+
+        <!-- In cart indicator -->
+        <div class="pdp-in-cart-note" *ngIf="isInCart">
+          <span><i class="fa-light fa-bag-shopping"></i></span>
+          {{ cartItemQty }} in your bag —
+          <a routerLink="/cart" class="pdp-view-bag-link">View Bag</a>
+        </div>
+
+        <!-- Delivery accordion -->
+        <div class="pdp-accordion">
+          <div class="pdp-accordion-head" (click)="deliveryOpen = !deliveryOpen">
+            <span>See our fast Delivery &amp; Returns options</span>
+            <span class="pdp-accordion-chevron">
+              <span><i [class]="deliveryOpen ? 'fa-light fa-chevron-up' : 'fa-light fa-chevron-down'"></i></span>
+            </span>
+          </div>
+          <div class="pdp-accordion-body" *ngIf="deliveryOpen">
+            <p>Standard delivery: 3-5 working days</p>
+            <p>Express delivery: Next working day</p>
+            <p>Free returns within 28 days</p>
+          </div>
+        </div>
+
+        <!-- Description accordion -->
+        <div class="pdp-accordion" *ngIf="product.description">
+          <div class="pdp-accordion-head" (click)="descOpen = !descOpen">
+            <span>Description</span>
+            <span class="pdp-accordion-chevron">
+              <span><i [class]="descOpen ? 'fa-light fa-chevron-up' : 'fa-light fa-chevron-down'"></i></span>
+            </span>
+          </div>
+          <div class="pdp-accordion-body" *ngIf="descOpen">{{product.description}}</div>
+        </div>
+
+        <!-- You May Also Like -->
+        <div class="pdp-also-like" *ngIf="relatedProducts.length > 0">
+          <div class="pdp-section-title">You May Also Like</div>
+          <div class="pdp-related-row-wrap">
+            <div class="pdp-related-row" id="pdpRelatedRow">
+              <a class="pdp-related-card" *ngFor="let rp of relatedProducts" [routerLink]="['/product', rp.slug]">
+                <div class="pdp-related-img">
+                  <img *ngIf="getFirstImage(rp.images)" [src]="getFirstImage(rp.images)" [alt]="rp.name" />
+                  <div *ngIf="!getFirstImage(rp.images)" class="pdp-related-placeholder"></div>
+                </div>
+                <div class="pdp-related-name">{{rp.name}}</div>
+                <div class="pdp-related-price">{{rp.salePrice || rp.price | currency:'GBP':'symbol':'1.2-2'}}</div>
+              </a>
+            </div>
+            <button class="pdp-row-arrow" (click)="scrollRelated('pdpRelatedRow', 1)" aria-label="Scroll right">
+              <span><i class="fa-light fa-chevron-right"></i></span>
+            </button>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- ══════════════════════════════════════════════════════════════════ -->
+      <!-- TAB 2: MORE LIKE THIS                                             -->
+      <!-- ══════════════════════════════════════════════════════════════════ -->
+      <div class="pdp-tab-content" *ngIf="activeTab === 'more'">
+
+        <!-- Loading -->
+        <div class="pdp-more-skeleton" *ngIf="relatedLoading">
+          <div class="pdp-more-grid">
+            <div class="pdp-more-skeleton-card" *ngFor="let s of [1,2,3,4]">
+              <div class="skeleton-more-img"></div>
+              <div class="skeleton-line w80 mb4"></div>
+              <div class="skeleton-line w40"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- No related -->
+        <div class="pdp-more-empty" *ngIf="!relatedLoading && relatedProducts.length === 0">
+          <p>No similar products found.</p>
+        </div>
+
+        <!-- You May Also Like grid -->
+        <div *ngIf="!relatedLoading && relatedProducts.length > 0">
+          <div class="pdp-more-section-title">You May Also Like</div>
+          <div class="pdp-more-row-wrap">
+            <div class="pdp-more-row" id="pdpMoreRow">
+              <a class="pdp-more-card" *ngFor="let rp of relatedProducts" [routerLink]="['/product', rp.slug]">
+                <div class="pdp-more-img">
+                  <img *ngIf="getFirstImage(rp.images)" [src]="getFirstImage(rp.images)" [alt]="rp.name" />
+                  <div *ngIf="!getFirstImage(rp.images)" class="pdp-more-placeholder"></div>
+                </div>
+                <div class="pdp-more-name">{{rp.name}}</div>
+                <div class="pdp-more-price">{{rp.salePrice || rp.price | currency:'GBP':'symbol':'1.2-2'}}</div>
+              </a>
+            </div>
+            <button class="pdp-row-arrow" (click)="scrollRelated('pdpMoreRow', 1)" aria-label="Scroll right">
+              <span><i class="fa-light fa-chevron-right"></i></span>
+            </button>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ══ REVIEWS SECTION ══ -->
+  <div class="pdp-reviews-section" id="reviews">
+    <div class="pdp-reviews-inner">
+      <h2 class="pdp-section-title">Reviews</h2>
+
+      <!-- Stats -->
+      <div class="reviews-stats" *ngIf="reviewStats?.totalCount > 0">
+        <div class="reviews-snapshot">
+          <div class="snapshot-title">Rating Snapshot</div>
+          <div class="snapshot-row" *ngFor="let s of [5,4,3,2,1]">
+            <span class="snapshot-label">{{s}} star{{s > 1 ? 's' : ''}}</span>
+            <div class="snapshot-bar-wrap">
+              <div class="snapshot-bar-fill" [style.width]="getStarPercent(s) + '%'"></div>
+            </div>
+            <span class="snapshot-count">{{reviewStats['star' + s] || 0}}</span>
+          </div>
+        </div>
+        <div class="reviews-overall">
+          <div class="overall-title">Overall Rating</div>
+          <div class="overall-score">{{reviewStats.avgRating | number:'1.1-1'}}</div>
+          <div class="overall-stars">
+            <span *ngFor="let s of starArray" class="pdp-star lg" [class.filled]="s <= reviewStats.avgRating">★</span>
+          </div>
+          <div class="overall-count">{{reviewStats.totalCount}} Reviews</div>
+        </div>
+      </div>
+
+      <!-- Sort + Count -->
+      <div class="reviews-toolbar" *ngIf="reviews.length > 0">
+        <span class="reviews-showing">1 – {{reviews.length}} of {{reviewStats?.totalCount}} Reviews</span>
+        <div class="reviews-sort-wrap">
+          <label>Sort by</label>
+          <select class="reviews-sort-select" [ngModel]="reviewSort" (ngModelChange)="changeReviewSort($event)">
+            <option value="newest">Most Recent</option>
+            <option value="highest">Highest Rated</option>
+            <option value="lowest">Lowest Rated</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Review list -->
+      <div class="review-list">
+        <div class="review-item" *ngFor="let r of reviews">
+          <div class="review-left">
+            <div class="reviewer-name">{{r.reviewerName}}</div>
+            <div class="reviewer-badge">✓ VERIFIED PURCHASER</div>
+          </div>
+          <div class="review-right">
+            <div class="review-stars">
+              <span *ngFor="let s of starArray" class="pdp-star" [class.filled]="s <= r.rating">★</span>
+            </div>
+            <div class="review-title" *ngIf="r.title">{{r.title}}</div>
+            <div class="review-date">{{timeAgo(r.created_at)}}</div>
+            <div class="review-body">{{r.body}}</div>
+          </div>
+        </div>
+
+        <!-- Skeleton -->
+        <div class="review-item skeleton-review" *ngFor="let s of [1,2]" [hidden]="!reviewsLoading">
+          <div class="review-left"><div class="skeleton-line w60"></div></div>
+          <div class="review-right">
+            <div class="skeleton-line w30 mb8"></div>
+            <div class="skeleton-line w80 mb4"></div>
+            <div class="skeleton-line w90"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Load more reviews -->
+      <button class="load-more-reviews-btn" *ngIf="hasMoreReviews && !reviewsLoading" (click)="loadMoreReviews()">
+        Load More Reviews
+      </button>
+
+      <!-- Write review -->
+      <div class="write-review-section">
+        <button class="write-review-btn" (click)="showReviewForm = !showReviewForm">
+          {{showReviewForm ? 'Cancel' : 'Write a Review'}}
+        </button>
+
+        <div class="review-form" *ngIf="showReviewForm">
+          <div class="review-form-row">
+            <input class="review-input" type="text" placeholder="Your name *" [(ngModel)]="reviewForm.reviewerName" />
+            <input class="review-input" type="text" placeholder="Review title" [(ngModel)]="reviewForm.title" />
+          </div>
+          <div class="review-star-select">
+            <span>Rating:</span>
+            <span *ngFor="let s of starArray" class="pdp-star lg clickable"
+              [class.filled]="s <= reviewForm.rating" (click)="reviewForm.rating = s">★</span>
+          </div>
+          <textarea class="review-textarea" rows="4" placeholder="Write your review *" [(ngModel)]="reviewForm.body"></textarea>
+          <button class="submit-review-btn" (click)="submitReview()" [disabled]="reviewSubmitting">
+            {{reviewSubmitting ? 'Submitting...' : 'Submit Review'}}
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ══ RECENTLY VIEWED ══ -->
+  <div class="recently-viewed-section" *ngIf="recentlyViewed.length > 0">
+    <div class="rv-header">
+      <span class="rv-title">Recently Viewed</span>
+      <button class="rv-clear" (click)="clearRecentlyViewed()">Clear History</button>
+    </div>
+    <div class="rv-grid">
+      <a class="rv-card" *ngFor="let rv of recentlyViewed" [routerLink]="['/product', rv.slug]">
+        <div class="rv-img">
+          <img *ngIf="getFirstImage(rv.images)" [src]="getFirstImage(rv.images)" [alt]="rv.name" />
+          <div *ngIf="!getFirstImage(rv.images)" class="rv-img-placeholder"></div>
+        </div>
+        <div class="rv-price">{{sharedService.currency}}{{rv.salePrice || rv.price}}</div>
+      </a>
+    </div>
+  </div>
+
+</div>

@@ -1,0 +1,300 @@
+<!-- ===== TOP BAR ===== -->
+<div class="top-bar">
+  <div class="top-bar-center">
+    Split the cost with pay in 3.
+    <a href="/pay-in-3">Find out more</a>
+  </div>
+  <div class="top-bar-right">
+    <a href="/store-locator">Store Locator</a>
+    <span class="divider">|</span>
+    <a href="/help">Help</a>
+  </div>
+</div>
+
+<!-- ===== DESKTOP MAIN HEADER ===== -->
+<header class="main-header desktop-header">
+  <div class="header-search">
+    <input type="text" [(ngModel)]="searchTxt" placeholder="Search for anything here..."
+      (keyup.enter)="onSearch()" />
+    <button class="search-icon-btn" (click)="onSearch()" aria-label="Search">
+      <span><i class="fa-light fa-magnifying-glass"></i></span>
+    </button>
+  </div>
+
+  <!-- Logo — shows when siteConfig loads, nothing before -->
+  <div class="header-logo">
+    <a routerLink="/">
+      <img *ngIf="sharedService.siteConfig?.logo"
+           [src]="sharedService.siteConfig.logo"
+           [alt]="sharedService.siteConfig?.siteName || 'Logo'" />
+      <span *ngIf="sharedService.siteConfig && !sharedService.siteConfig?.logo" class="logo-text">
+        {{ sharedService.siteConfig?.siteName || 'NEXT' }}
+      </span>
+    </a>
+  </div>
+
+  <div class="header-actions">
+    <!-- Cart icon + dropdown -->
+    <div class="cart-wrap" (click)="toggleCartDrop($event)">
+      <button class="icon-btn" aria-label="Basket">
+        <svg viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+        <span class="cart-badge" *ngIf="cartService.count > 0">{{cartService.count}}</span>
+      </button>
+
+      <!-- Cart Dropdown -->
+      <div class="cart-dropdown" *ngIf="cartDropOpen" (click)="$event.stopPropagation()">
+        <div class="cart-drop-arrow"></div>
+        <div class="cart-drop-head">
+          <span class="cart-drop-count">{{ cartService.count }} ITEM{{ cartService.count !== 1 ? 'S' : '' }} IN BAG</span>
+        </div>
+        <div class="cart-drop-empty" *ngIf="cartService.items.length === 0">
+          <span><i class="fa-light fa-bag-shopping"></i></span>
+          <p>Your bag is empty</p>
+        </div>
+        <div class="cart-drop-items" *ngIf="cartService.items.length > 0">
+          <div class="cart-drop-item" *ngFor="let item of cartService.items">
+            <img *ngIf="item.image" [src]="item.image" [alt]="item.name" class="cart-drop-item-img" />
+            <div *ngIf="!item.image" class="cart-drop-item-img-ph">
+              <span><i class="fa-light fa-image"></i></span>
+            </div>
+            <div class="cart-drop-item-info">
+              <div class="cart-drop-item-name">{{ item.name }}</div>
+              <div class="cart-drop-item-opts" *ngFor="let opt of item.selectedOptions | keyvalue">
+                {{ opt.key }}: {{ opt.value }}
+              </div>
+              <div class="cart-drop-item-qty">Qty: {{ item.quantity }}</div>
+              <div class="cart-drop-item-stock">
+                <span><i class="fa-solid fa-circle-check"></i></span> In Stock
+              </div>
+            </div>
+            <div class="cart-drop-item-price">
+              <span *ngIf="item.salePrice" class="cart-drop-sale">{{ item.salePrice | currency:'GBP':'symbol':'1.2-2' }}</span>
+              <span [class.cart-drop-orig-strike]="item.salePrice">{{ item.price | currency:'GBP':'symbol':'1.2-2' }}</span>
+            </div>
+          </div>
+        </div>
+        <div class="cart-drop-total-row" *ngIf="cartService.items.length > 0">
+          <span class="cart-drop-total-label">Total</span>
+          <span class="cart-drop-total-val">{{ cartService.getTotal() | currency:'GBP':'symbol':'1.2-2' }}</span>
+        </div>
+        <p class="cart-drop-delivery" *ngIf="cartService.items.length > 0">
+          Excluding UK Standard Delivery (Normally £4.95)
+        </p>
+        <div class="cart-drop-btns">
+          <button class="cart-drop-view-btn" (click)="goToCart()">VIEW BAG</button>
+          <button class="cart-drop-checkout-btn"
+            [class.disabled]="cartService.items.length === 0"
+            [disabled]="cartService.items.length === 0"
+            (click)="goToCheckout()">CHECKOUT</button>
+        </div>
+      </div>
+    </div>
+
+    <a routerLink="/wishlist" class="icon-btn" aria-label="Wishlist">
+      <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+      <span class="cart-badge" *ngIf="favService.count > 0">{{favService.count}}</span>
+    </a>
+
+    <!-- Account icon + dropdown -->
+    <div class="acct-wrap" (click)="toggleAccountDrop($event)">
+      <button class="icon-btn acct-icon-btn" aria-label="Account">
+        <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      </button>
+      <div class="acct-dropdown" *ngIf="accountDropOpen" (click)="$event.stopPropagation()">
+        <div class="acct-drop-arrow"></div>
+        <a routerLink="/account" class="acct-drop-head" (click)="closeAccountDrop()">
+          <span class="acct-drop-head-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" width="22" height="22">
+              <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/>
+            </svg>
+          </span>
+          <span class="acct-drop-head-label">MY ACCOUNT</span>
+        </a>
+        <ng-container *ngIf="authService.isLoggedIn">
+          <div class="acct-drop-divider"></div>
+          <p class="acct-drop-greeting">Not {{ authService.customer?.firstName }}?</p>
+          <button class="acct-drop-signout" (click)="signOut()">SIGN OUT</button>
+        </ng-container>
+        <ng-container *ngIf="!authService.isLoggedIn">
+          <div class="acct-drop-divider"></div>
+          <a routerLink="/login" class="acct-drop-signin" (click)="closeAccountDrop()">SIGN IN</a>
+          <p class="acct-drop-register-txt">New customer?
+            <a routerLink="/register" (click)="closeAccountDrop()">Register here</a>
+          </p>
+        </ng-container>
+      </div>
+    </div>
+    <a routerLink="/checkout" class="checkout-btn">CHECKOUT</a>
+  </div>
+</header>
+
+<!-- ===== MOBILE MAIN HEADER ===== -->
+<header class="main-header mobile-header">
+  <div class="mob-left">
+    <a routerLink="/account" class="mob-icon-btn" aria-label="Account">
+      <span><i class="fa-light fa-circle-user"></i></span>
+    </a>
+    <a routerLink="/wishlist" class="mob-icon-btn" aria-label="Wishlist">
+      <span><i class="fa-light fa-heart"></i></span>
+    </a>
+  </div>
+  <div class="header-logo">
+    <a routerLink="/">
+      <img *ngIf="sharedService.siteConfig?.logo"
+           [src]="sharedService.siteConfig.logo"
+           [alt]="sharedService.siteConfig?.siteName || 'Logo'" />
+      <span *ngIf="sharedService.siteConfig && !sharedService.siteConfig?.logo" class="logo-text">
+        {{ sharedService.siteConfig?.siteName || 'NEXT' }}
+      </span>
+    </a>
+  </div>
+  <div class="mob-right">
+    <button class="mob-icon-btn" (click)="openMobileSearch()" aria-label="Search">
+      <span><i class="fa-light fa-magnifying-glass"></i></span>
+    </button>
+    <a routerLink="/bag" class="mob-icon-btn mob-bag-btn" aria-label="Bag">
+      <span><i class="fa-light fa-bag-shopping"></i></span>
+      <span class="mob-cart-badge" *ngIf="cartService.count > 0">{{cartService.count}}</span>
+    </a>
+  </div>
+</header>
+
+<!-- ===== MOBILE SEARCH OFFCANVAS ===== -->
+<div class="mob-search-backdrop" *ngIf="mobileSearchOpen" (click)="closeMobileSearch()"></div>
+<div class="mob-search-panel" [class.open]="mobileSearchOpen">
+
+  <!-- Search input row -->
+  <div class="mob-search-input-row">
+    <button class="mob-search-close" (click)="closeMobileSearch()" aria-label="Close">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+          stroke-linecap="round" width="20" height="20">
+        <line x1="18" y1="6" x2="6" y2="18"/>
+        <line x1="6" y1="6" x2="18" y2="18"/>
+      </svg>
+    </button>
+    <div class="mob-search-field">
+      <input id="mob-search-input"
+             class="mob-search-input"
+             type="text"
+             placeholder="Search for anything..."
+             [(ngModel)]="mobileSearchTxt"
+             (keyup.enter)="onMobileSearch()"
+             autocomplete="off" />
+      <button class="mob-search-clear" *ngIf="mobileSearchTxt" (click)="mobileSearchTxt = ''" aria-label="Clear">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+            stroke-linecap="round" width="14" height="14">
+          <line x1="18" y1="6" x2="6" y2="18"/>
+          <line x1="6" y1="6" x2="18" y2="18"/>
+        </svg>
+      </button>
+    </div>
+    <button class="mob-search-go" (click)="onMobileSearch()" aria-label="Search">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+          stroke-linecap="round" width="20" height="20">
+        <circle cx="11" cy="11" r="8"/>
+        <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+      </svg>
+    </button>
+  </div>
+
+  <!-- Recent searches -->
+  <div class="mob-search-body">
+    <div class="mob-search-section-head">
+      <span class="mob-search-section-title">Recent Searches</span>
+      <button class="mob-search-clear-all" *ngIf="recentSearches.length > 0"
+              (click)="clearAllRecentSearches()">Clear All</button>
+    </div>
+
+    <div class="mob-search-empty" *ngIf="recentSearches.length === 0">
+      No recent searches
+    </div>
+
+    <div class="mob-search-history" *ngIf="recentSearches.length > 0">
+      <div class="mob-search-history-item" *ngFor="let s of recentSearches"
+           (click)="selectRecentSearch(s)">
+        <span class="mob-search-history-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+              stroke-linecap="round" width="14" height="14">
+            <circle cx="11" cy="11" r="8"/>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+          </svg>
+        </span>
+        <span class="mob-search-history-text">{{ s }}</span>
+        <button class="mob-search-history-del" (click)="clearRecentSearch(s, $event)" aria-label="Remove">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+              stroke-linecap="round" width="12" height="12">
+            <line x1="18" y1="6" x2="6" y2="18"/>
+            <line x1="6" y1="6" x2="18" y2="18"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ===== NAV BAR ===== -->
+<nav class="nav-bar shared-nav">
+  <button class="nav-arrow nav-arrow-prev" (click)="scrollNav('left')" aria-label="Scroll left">
+    <span><i class="fa-light fa-chevron-left"></i></span>
+  </button>
+
+  <!-- Nav skeleton — shown while categories load -->
+  <div class="nav-skeleton" *ngIf="dynNavItems.length === 0">
+    <div class="nav-sk-item" *ngFor="let s of [1,2,3,4,5,6,7,8]"></div>
+  </div>
+
+  <!-- Real nav items -->
+  <ul class="nav-inner" id="navScrollContainer" *ngIf="dynNavItems.length > 0">
+    <li *ngFor="let item of dynNavItems" class="nav-item"
+      (mouseenter)="openMenu(item.id)"
+      (mouseleave)="closeMenu()">
+      <span class="nav-label" [class.open]="activeMenuId === item.id"
+        [routerLink]="getCategoryUrl(item.id, true)"
+        (click)="closeMenu()" style="cursor:pointer">{{item.label}}</span>
+    </li>
+  </ul>
+
+  <button class="nav-arrow nav-arrow-next" (click)="scrollNav('right')" aria-label="Scroll right">
+    <span><i class="fa-light fa-chevron-right"></i></span>
+  </button>
+</nav>
+
+<!-- ===== MEGA MENU (desktop only) ===== -->
+<div class="mega-menu" *ngIf="activeMenuId && activeNavItem"
+  (mouseenter)="keepMenu()" (mouseleave)="closeMenu()">
+
+  <div class="mega-inner">
+    <div class="mega-col mega-col-1">
+      <a class="mega-newin-link mega-newin-main"
+         [routerLink]="getCategoryUrl(activeNavItem.id, true)"
+         (click)="closeMenu()">New In</a>
+      <a class="mega-newin-link"
+         [routerLink]="['/shop']" [queryParams]="{categoryId: activeNavItem.id, newIn: 'true'}"
+         (click)="closeMenu()">New In: This Week</a>
+      <div class="mega-divider"></div>
+      <ng-container *ngIf="activeNavItem.sections.length > 0">
+        <div class="mega-group-head">{{ activeNavItem.sections[0].name }}</div>
+        <a class="mega-sub-link" *ngFor="let child of activeNavItem.sections[0].children"
+           [routerLink]="['/shop']" [queryParams]="{categoryId: child.id}"
+           (click)="closeMenu()">{{ child.name }}</a>
+      </ng-container>
+    </div>
+
+    <ng-container *ngFor="let colGroups of groupedSections; let ci = index">
+      <div class="mega-col mega-col-groups">
+        <ng-container *ngFor="let sec of colGroups; let gi = index">
+          <div [class.mega-group-spacer]="gi > 0"></div>
+          <div class="mega-group-head">
+            <a [routerLink]="['/shop']" [queryParams]="{categoryId: sec.id}" (click)="closeMenu()">
+              {{ sec.name }}
+            </a>
+          </div>
+          <a class="mega-sub-link" *ngFor="let child of sec.children"
+             [routerLink]="['/shop']" [queryParams]="{categoryId: child.id}"
+             (click)="closeMenu()">{{ child.name }}</a>
+        </ng-container>
+      </div>
+    </ng-container>
+  </div>
+</div>
