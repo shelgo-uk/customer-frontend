@@ -53,7 +53,6 @@ export class FooterComponent {
     { icon: 'fa-light fa-circle-user',  title: 'My Account',      sub: 'Sign-in to your account',        url: '/account' },
     { icon: 'fa-light fa-heart',        title: 'My Favourites',    sub: 'View your saved items',           url: '/wishlist' },
     { icon: 'fa-light fa-globe',        title: 'Change Country',   sub: 'Choose your shopping location',  url: '/change-country' },
-    { icon: 'fa-light fa-store',        title: 'Store Locator',    sub: 'Find your nearest store',        url: '/store-locator' },
     { icon: 'fa-light fa-message-dots', title: 'Start a Chat',     sub: 'For general enquiries',          url: '/help/chat' },
   ];
 

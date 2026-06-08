@@ -30,7 +30,6 @@ export class SiteMapComponent implements OnInit {
         { label: 'Delivery Information',        url: '/help/delivery' },
         { label: 'Arrange A Return',            url: '/help/returns' },
         { label: 'Contact Us',                  url: '/help/contact' },
-        { label: 'Store Locator',               url: '/store-locator' },
     ];
 
     legalLinks = [
