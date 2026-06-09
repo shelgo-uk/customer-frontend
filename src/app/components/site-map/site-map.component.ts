@@ -102,6 +102,6 @@ export class SiteMapComponent implements OnInit {
     }
 
     get siteName(): string {
-        return this.sharedService.siteConfig?.siteName || 'NEXT';
+        return this.sharedService.siteConfig?.siteName || 'Shelgo';
     }
 }

@@ -5,6 +5,8 @@ import { Subscription } from 'rxjs';
 import { HomeBannerService } from '../../shared/services/home-banner.service';
 import { AppStoreService } from '../../shared/services/app-store.service';
 import { environment } from '../../shared/environment/environment';
+import { openSafeUrl } from '../../shared/utils/link.util';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-home',
@@ -44,6 +46,7 @@ export class HomeComponent implements OnInit, OnDestroy {
         private homeBannerService: HomeBannerService,
         public appStore: AppStoreService,
         private http: HttpClient,
+        private router: Router,
         @Inject(PLATFORM_ID) private platformId: Object
     ) { }
 
@@ -185,13 +188,18 @@ export class HomeComponent implements OnInit, OnDestroy {
 
     openPromoLink(banner: any) {
         if (banner?.redirectionUrl) {
-            window.open(banner.redirectionUrl, '_blank');
+            openSafeUrl(banner.redirectionUrl, this.router, true);
         }
     }
 
     openRedirection(banner: any) {
-        if (banner.redirectionUrl) {
-            window.open(banner.redirectionUrl, '_blank');
+        if (banner?.redirectionUrl) {
+            const url = banner.redirectionUrl;
+            if (url.startsWith('/') || !/^https?:\/\//i.test(url)) {
+                openSafeUrl(url, this.router, false);
+            } else {
+                openSafeUrl(url, this.router, true);
+            }
         }
     }
 

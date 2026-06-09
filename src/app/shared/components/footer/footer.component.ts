@@ -16,7 +16,7 @@ export class FooterComponent {
   constructor(public sharedService: SharedService) {}
 
   get siteName(): string {
-    return this.sharedService.siteConfig?.siteName || 'Next';
+    return this.sharedService.siteConfig?.siteName || 'Shelgo';
   }
 
   subscribeNewsletter() {
@@ -24,12 +24,10 @@ export class FooterComponent {
     if (!email || !email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) {
       return;
     }
-    // TODO: wire to API when newsletter endpoint is ready
     this.isSubscribed = true;
     this.newsletterEmail = '';
   }
 
-  // Mobile accordion state
   openSection: string | null = null;
 
   toggleSection(section: string) {
@@ -40,20 +38,23 @@ export class FooterComponent {
     return this.openSection === section;
   }
 
-  socialLinks = [
-    { icon: 'fa-brands fa-facebook-f',  label: 'Facebook',    url: 'https://www.facebook.com/nextofficial' },
-    { icon: 'fa-brands fa-x-twitter',   label: 'X / Twitter', url: 'https://twitter.com/nextofficial' },
-    { icon: 'fa-brands fa-tiktok',       label: 'TikTok',      url: 'https://www.tiktok.com/@next' },
-    { icon: 'fa-brands fa-instagram',    label: 'Instagram',   url: 'https://www.instagram.com/nextofficial' },
-    { icon: 'fa-brands fa-pinterest-p',  label: 'Pinterest',   url: 'https://www.pinterest.com/nextofficial' },
-    { icon: 'fa-brands fa-youtube',      label: 'YouTube',     url: 'https://www.youtube.com/next' },
-  ];
+  get socialLinks() {
+    const c = this.sharedService.siteConfig || {};
+    const items = [
+      { icon: 'fa-brands fa-facebook-f',  label: 'Facebook',  url: c.facebookURL },
+      { icon: 'fa-brands fa-x-twitter',   label: 'X',         url: c.twitterURL },
+      { icon: 'fa-brands fa-instagram',    label: 'Instagram', url: c.instagramURL },
+      { icon: 'fa-brands fa-youtube',      label: 'YouTube',   url: c.youtubeURL },
+      { icon: 'fa-brands fa-linkedin-in',  label: 'LinkedIn',  url: c.linkedInURL },
+    ];
+    return items.filter(s => s.url && String(s.url).trim());
+  }
 
   quickLinks = [
     { icon: 'fa-light fa-circle-user',  title: 'My Account',      sub: 'Sign-in to your account',        url: '/account' },
     { icon: 'fa-light fa-heart',        title: 'My Favourites',    sub: 'View your saved items',           url: '/wishlist' },
     { icon: 'fa-light fa-globe',        title: 'Change Country',   sub: 'Choose your shopping location',  url: '/change-country' },
-    { icon: 'fa-light fa-message-dots', title: 'Start a Chat',     sub: 'For general enquiries',          url: '/help/chat' },
+    { icon: 'fa-light fa-message-dots', title: 'Start a Chat',     sub: 'For general enquiries',          url: '/help/contact' },
   ];
 
   columns: Array<{
@@ -69,22 +70,16 @@ export class FooterComponent {
         { label: 'Delivery Information',              url: '/help/delivery' },
         { label: 'Arrange A Return',                  url: '/help/returns' },
         { label: 'Product Recall',                    url: '/help/product-recall' },
-        { label: 'Customer Services – 0333 777 8000', url: 'tel:03337778000', sub: 'Check your service provider for charges' },
         { label: 'Contact Us',                        url: '/help/contact',  routerLink: true  },
-        { label: 'Accessible Site',                   url: '/help/accessible-site' },
-        { label: 'Website Accessibility Policy',      url: '/help/accessibility-policy' },
-        { label: 'Accessibility In Our Stores',       url: '/help/accessibility-stores' },
         { label: 'Site Map',                          url: '/site-map',    routerLink: true  },
-        { label: 'Complaints Process',                url: '/help/complaints' },
-        { label: 'Furniture Spare Parts',             url: '/help/furniture-spare-parts' },
       ]
     },
     {
       id: 'shopping',
       heading: 'Shopping With Us',
       links: [
-        { label: 'Next Unlimited',                    url: '/next-unlimited' },
-        { label: 'Next Credit Options',               url: '/credit' },
+        { label: 'Shelgo Unlimited',                  url: '/shelgo-unlimited' },
+        { label: 'Shelgo Credit Options',             url: '/credit' },
         { label: 'eGift Cards',                       url: '/gift-cards/egift' },
         { label: 'Gift Cards',                        url: '/gift-cards' },
         { label: 'Shipping Policy',                   url: '/policy/shipping-policy',      routerLink: true },
@@ -115,13 +110,13 @@ export class FooterComponent {
     },
     {
       id: 'more',
-      heading: 'More From Next',
+      heading: 'More From Shelgo',
       links: [
-        { label: 'Next App',                          url: '/x/apps' },
+        { label: 'Shelgo App',                        url: '/x/apps' },
         { label: 'The Company',                       url: '/the-company' },
         { label: 'Media & Press',                     url: '/media-press' },
         { label: 'Business 2 Business',               url: '/b2b' },
-        { label: 'NEXT Careers',                      url: '/careers' },
+        { label: 'Shelgo Careers',                    url: '/careers' },
         { label: 'View Our Modern Slavery Statement', url: '/modern-slavery' },
         { label: 'Gender Pay Report',                 url: '/gender-pay-report' },
         { label: 'Corporate Responsibility Report',   url: '/corporate-responsibility' },

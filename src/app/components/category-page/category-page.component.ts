@@ -7,6 +7,7 @@ import { SharedService } from '../../shared/services/shared.service';
 import { FavouritesService } from '../../shared/services/favourites.service';
 import { ProductService } from '../../shared/services/product.service';
 import { environment } from '../../shared/environment/environment';
+import { openSafeUrl } from '../../shared/utils/link.util';
 
 @Component({
     selector: 'app-category-page',
@@ -160,11 +161,7 @@ export class CategoryPageComponent implements OnInit, OnDestroy {
 
     openLink(url: string) {
         if (!url) return;
-        if (url.startsWith('http')) {
-            window.open(url, '_blank');
-        } else {
-            this.router.navigateByUrl(url);
-        }
+        openSafeUrl(url, this.router, /^https?:\/\//i.test(url));
     }
 
     // Hero banner from config
