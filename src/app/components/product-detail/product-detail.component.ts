@@ -5,6 +5,7 @@ import { ProductService } from '../../shared/services/product.service';
 import { SharedService } from '../../shared/services/shared.service';
 import { FavouritesService } from '../../shared/services/favourites.service';
 import { CartService } from '../../shared/services/cart.service';
+import { ReviewPoolService } from '../../shared/services/review-pool.service';
 
 @Component({
     selector: 'app-product-detail',
@@ -69,7 +70,8 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
         private router: Router,
         public sharedService: SharedService,
         public favService: FavouritesService,
-        public cartService: CartService
+        public cartService: CartService,
+        private reviewPool: ReviewPoolService
     ) {}
 
     ngOnInit(): void {
@@ -92,9 +94,10 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
         this.activeTab = 'product';
 
         this.productService.getProduct(slug).subscribe(
-            (res: any) => {
+            async (res: any) => {
                 if (!res.data) { this.notFound = true; this.isLoading = false; return; }
-                this.product = res.data;
+                await this.reviewPool.ensureLoaded();
+                this.product = this.reviewPool.enrichProduct(res.data);
                 this.isLoading = false;
 
                 // Default select first option of each variant
@@ -114,7 +117,11 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
         if (!this.product?.categoryId) return;
         this.relatedLoading = true;
         this.productService.getRelated(this.product.categoryId, this.product.id, 8).subscribe(
-            (res: any) => { this.relatedProducts = res.data || []; this.relatedLoading = false; },
+            async (res: any) => {
+                await this.reviewPool.ensureLoaded();
+                this.relatedProducts = this.reviewPool.enrichProducts(res.data || []);
+                this.relatedLoading = false;
+            },
             () => { this.relatedLoading = false; }
         );
     }
@@ -122,16 +129,42 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
     loadReviews(append = false) {
         if (!this.product?.id) return;
         this.reviewsLoading = true;
+
         this.productService.getReviews(this.product.id, this.reviewLimit, this.reviewOffset, this.reviewSort).subscribe(
-            (res: any) => {
-                const newReviews = res.data || [];
-                this.reviews = append ? [...this.reviews, ...newReviews] : newReviews;
-                this.reviewStats = res.stats;
-                this.reviewOffset += newReviews.length;
-                this.hasMoreReviews = this.reviews.length < (res.stats?.totalCount || 0);
+            async (res: any) => {
+                await this.reviewPool.ensureLoaded();
+                const apiReviews = res.data || [];
+                const meta = this.reviewPool.getRatingMeta(this.product);
+
+                if (apiReviews.length > 0 && (res.stats?.totalCount || 0) > 0) {
+                    this.reviews = append ? [...this.reviews, ...apiReviews] : apiReviews;
+                    this.reviewStats = res.stats;
+                    this.reviewOffset += apiReviews.length;
+                    this.hasMoreReviews = this.reviews.length < (res.stats?.totalCount || 0);
+                } else {
+                    const pool = this.reviewPool.getReviews(
+                        this.product.id, meta, this.reviewOffset, this.reviewLimit, this.reviewSort as any
+                    );
+                    this.reviews = append ? [...this.reviews, ...pool.data] : pool.data;
+                    this.reviewStats = pool.stats;
+                    this.reviewOffset += pool.data.length;
+                    this.hasMoreReviews = this.reviews.length < meta.reviewCount;
+                }
+
                 this.reviewsLoading = false;
             },
-            () => { this.reviewsLoading = false; }
+            async () => {
+                await this.reviewPool.ensureLoaded();
+                const meta = this.reviewPool.getRatingMeta(this.product);
+                const pool = this.reviewPool.getReviews(
+                    this.product.id, meta, this.reviewOffset, this.reviewLimit, this.reviewSort as any
+                );
+                this.reviews = append ? [...this.reviews, ...pool.data] : pool.data;
+                this.reviewStats = pool.stats;
+                this.reviewOffset += pool.data.length;
+                this.hasMoreReviews = this.reviews.length < meta.reviewCount;
+                this.reviewsLoading = false;
+            }
         );
     }
 
@@ -266,6 +299,18 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
         if (days < 7)  return `${days} days ago`;
         if (days < 30) return `${Math.floor(days/7)} weeks ago`;
         return `${Math.floor(days/30)} months ago`;
+    }
+
+    get deliveryDateFrom(): string {
+        const d = new Date();
+        d.setDate(d.getDate() + 8);
+        return d.toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short' });
+    }
+
+    get deliveryDateTo(): string {
+        const d = new Date();
+        d.setDate(d.getDate() + 10);
+        return d.toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short' });
     }
 
     get skeletonRelated(): number[] { return Array(4).fill(0); }

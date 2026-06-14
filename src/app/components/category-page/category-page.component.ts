@@ -6,6 +6,7 @@ import { AppStoreService } from '../../shared/services/app-store.service';
 import { SharedService } from '../../shared/services/shared.service';
 import { FavouritesService } from '../../shared/services/favourites.service';
 import { ProductService } from '../../shared/services/product.service';
+import { ReviewPoolService } from '../../shared/services/review-pool.service';
 import { environment } from '../../shared/environment/environment';
 import { openSafeUrl } from '../../shared/utils/link.util';
 
@@ -68,7 +69,8 @@ export class CategoryPageComponent implements OnInit, OnDestroy {
         public appStore: AppStoreService,
         public sharedService: SharedService,
         public favService: FavouritesService,
-        private productService: ProductService
+        private productService: ProductService,
+        private reviewPool: ReviewPoolService
     ) {}
 
     ngOnInit(): void {
@@ -126,8 +128,9 @@ export class CategoryPageComponent implements OnInit, OnDestroy {
             offset: 0,
             sort: 'newest'
         }).subscribe(
-            (res: any) => {
-                this.featuredProducts = res.data || [];
+            async (res: any) => {
+                await this.reviewPool.ensureLoaded();
+                this.featuredProducts = this.reviewPool.enrichProducts(res.data || []);
                 this.featuredLoading = false;
             },
             () => { this.featuredLoading = false; }

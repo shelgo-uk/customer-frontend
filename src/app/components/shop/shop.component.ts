@@ -5,6 +5,7 @@ import { ProductService } from '../../shared/services/product.service';
 import { AppStoreService } from '../../shared/services/app-store.service';
 import { SharedService } from '../../shared/services/shared.service';
 import { FavouritesService } from '../../shared/services/favourites.service';
+import { ReviewPoolService } from '../../shared/services/review-pool.service';
 
 @Component({
     selector: 'app-shop',
@@ -61,7 +62,8 @@ export class ShopComponent implements OnInit, OnDestroy {
         private router: Router,
         public appStore: AppStoreService,
         public sharedService: SharedService,
-        public favService: FavouritesService
+        public favService: FavouritesService,
+        private reviewPool: ReviewPoolService
     ) {}
 
     ngOnInit(): void {
@@ -230,8 +232,9 @@ export class ShopComponent implements OnInit, OnDestroy {
         if (this.searchTxt)          params.search     = this.searchTxt;
 
         this.productService.getProducts(params).subscribe(
-            (res: any) => {
-                const items = res.data || [];
+            async (res: any) => {
+                await this.reviewPool.ensureLoaded();
+                const items = this.reviewPool.enrichProducts(res.data || []);
                 this.products = [...this.products, ...items];
                 this.totalCount = res.totalCount || 0;
                 this.offset += items.length;

@@ -1,0 +1,602 @@
+[
+  {
+    "reviewerName": "Sarah M.",
+    "rating": 5,
+    "title": "Absolutely love it",
+    "body": "This is honestly one of the best products I have ordered online. The quality is outstanding and it feels premium from the moment you open the box. Overall a brilliant product and I would shop here again."
+  },
+  {
+    "reviewerName": "Emma R.",
+    "rating": 5,
+    "title": "Best purchase this year",
+    "body": "Arrived well packaged and exactly as described. Really pleased with the finish and attention to detail — would definitely recommend to friends and family. Overall a brilliant product and I would shop here again."
+  },
+  {
+    "reviewerName": "James B.",
+    "rating": 5,
+    "title": "Excellent quality",
+    "body": "Great product at a fair price. Comfortable, well made, and looks even better in person than in the photos on the website. Overall a brilliant product and I would shop here again."
+  },
+  {
+    "reviewerName": "Olivia E.",
+    "rating": 4,
+    "title": "Highly recommend",
+    "body": "I was unsure at first but so glad I went ahead. Soft material, neat stitching, and the colour is true to the pictures. Very satisfied. Overall a brilliant product and I would shop here again."
+  },
+  {
+    "reviewerName": "Mohammed H.",
+    "rating": 5,
+    "title": "Great value for money",
+    "body": "Fast delivery and a brilliant product. Have already worn it several times and it still looks brand new. Will be ordering another colour soon. Overall a brilliant product and I would shop here again."
+  },
+  {
+    "reviewerName": "Priya N.",
+    "rating": 4,
+    "title": "Perfect for everyday use",
+    "body": "Quality is far better than I expected for the price. Fits perfectly and feels durable — exactly what I was looking for. Overall a brilliant product and I would shop here again."
+  },
+  {
+    "reviewerName": "David M.",
+    "rating": 5,
+    "title": "Very happy with this",
+    "body": "Bought this as a gift and the recipient loved it. Presentation was lovely and the product itself feels luxurious. Highly recommend. Overall a brilliant product and I would shop here again."
+  },
+  {
+    "reviewerName": "Sophie R.",
+    "rating": 5,
+    "title": "Worth every penny",
+    "body": "Simple, stylish, and well made. Washes well and keeps its shape. One of my favourite purchases from this site so far. Overall a brilliant product and I would shop here again."
+  },
+  {
+    "reviewerName": "Amelia B.",
+    "rating": 4,
+    "title": "Exceeded expectations",
+    "body": "Really happy with this order. Good sizing, nice weight to the fabric, and the overall finish is excellent. Five stars. Overall a brilliant product and I would shop here again."
+  },
+  {
+    "reviewerName": "Daniel E.",
+    "rating": 5,
+    "title": "Brilliant product",
+    "body": "Have ordered similar items elsewhere before but this one is genuinely the best. Great customer experience from start to finish. Overall a brilliant product and I would shop here again."
+  },
+  {
+    "reviewerName": "Grace H.",
+    "rating": 5,
+    "title": "Could not be happier",
+    "body": "The product feels sturdy and well finished. No loose threads or cheap feel — clearly made with care. Very impressed overall. Overall a brilliant product and I would shop here again."
+  },
+  {
+    "reviewerName": "Lucy N.",
+    "rating": 4,
+    "title": "Fantastic find",
+    "body": "Perfect addition to my wardrobe. Versatile, comfortable, and looks smart. Delivery was quick too which was a bonus. Overall a brilliant product and I would shop here again."
+  },
+  {
+    "reviewerName": "Harry M.",
+    "rating": 5,
+    "title": "Really impressed",
+    "body": "I rarely leave reviews but this deserves one. Brilliant quality, true to size, and the sale price made it an even better buy. Overall a brilliant product and I would shop here again."
+  },
+  {
+    "reviewerName": "Chloe R.",
+    "rating": 5,
+    "title": "Top quality item",
+    "body": "Lovely item — exactly what I needed. The photos do not do it justice. Already recommended it to two colleagues. Overall a brilliant product and I would shop here again."
+  },
+  {
+    "reviewerName": "Ryan B.",
+    "rating": 5,
+    "title": "Will buy again",
+    "body": "Very pleased with the overall quality. Packaging was neat, product was clean, and it matched the description perfectly. Overall a brilliant product and I would shop here again."
+  },
+  {
+    "reviewerName": "Aisha E.",
+    "rating": 4,
+    "title": "Lovely product",
+    "body": "Good value and excellent craftsmanship. Have washed it twice already and the colour has not faded at all. Overall a brilliant product and I would shop here again."
+  },
+  {
+    "reviewerName": "Tom H.",
+    "rating": 5,
+    "title": "Superb quality",
+    "body": "Smart, practical, and well priced. Arrived earlier than expected and I have been using it daily since it came. Overall a brilliant product and I would shop here again."
+  },
+  {
+    "reviewerName": "Emily N.",
+    "rating": 5,
+    "title": "Amazing deal",
+    "body": "This exceeded my expectations in every way. Material feels premium, fit is spot on, and it looks great. Overall a brilliant product and I would shop here again."
+  },
+  {
+    "reviewerName": "Jack M.",
+    "rating": 4,
+    "title": "Five stars from me",
+    "body": "One of the best online purchases I have made this year. Would not hesitate to order again from here. Overall a brilliant product and I would shop here again."
+  },
+  {
+    "reviewerName": "Mia R.",
+    "rating": 5,
+    "title": "Delighted with my order",
+    "body": "Super happy with the quality and finish. It feels like a much more expensive product than what I paid. Overall a brilliant product and I would shop here again."
+  },
+  {
+    "reviewerName": "Noah B.",
+    "rating": 5,
+    "title": "Absolutely love it",
+    "body": "This is honestly one of the best products I have ordered online. The quality is outstanding and it feels premium from the moment you open the box. Overall a brilliant product and I would shop here again."
+  },
+  {
+    "reviewerName": "Isla E.",
+    "rating": 5,
+    "title": "Best purchase this year",
+    "body": "Arrived well packaged and exactly as described. Really pleased with the finish and attention to detail — would definitely recommend to friends and family. Overall a brilliant product and I would shop here again."
+  },
+  {
+    "reviewerName": "Leo H.",
+    "rating": 5,
+    "title": "Excellent quality",
+    "body": "Great product at a fair price. Comfortable, well made, and looks even better in person than in the photos on the website. Overall a brilliant product and I would shop here again."
+  },
+  {
+    "reviewerName": "Freya N.",
+    "rating": 4,
+    "title": "Highly recommend",
+    "body": "I was unsure at first but so glad I went ahead. Soft material, neat stitching, and the colour is true to the pictures. Very satisfied. Overall a brilliant product and I would shop here again."
+  },
+  {
+    "reviewerName": "Oscar M.",
+    "rating": 5,
+    "title": "Great value for money",
+    "body": "Fast delivery and a brilliant product. Have already worn it several times and it still looks brand new. Will be ordering another colour soon. Overall a brilliant product and I would shop here again."
+  },
+  {
+    "reviewerName": "Zara R.",
+    "rating": 4,
+    "title": "Perfect for everyday use",
+    "body": "Quality is far better than I expected for the price. Fits perfectly and feels durable — exactly what I was looking for. Overall a brilliant product and I would shop here again."
+  },
+  {
+    "reviewerName": "Ben B.",
+    "rating": 5,
+    "title": "Very happy with this",
+    "body": "Bought this as a gift and the recipient loved it. Presentation was lovely and the product itself feels luxurious. Highly recommend. Overall a brilliant product and I would shop here again."
+  },
+  {
+    "reviewerName": "Hannah E.",
+    "rating": 5,
+    "title": "Worth every penny",
+    "body": "Simple, stylish, and well made. Washes well and keeps its shape. One of my favourite purchases from this site so far. Overall a brilliant product and I would shop here again."
+  },
+  {
+    "reviewerName": "Sam H.",
+    "rating": 4,
+    "title": "Exceeded expectations",
+    "body": "Really happy with this order. Good sizing, nice weight to the fabric, and the overall finish is excellent. Five stars. Overall a brilliant product and I would shop here again."
+  },
+  {
+    "reviewerName": "Nadia N.",
+    "rating": 5,
+    "title": "Brilliant product",
+    "body": "Have ordered similar items elsewhere before but this one is genuinely the best. Great customer experience from start to finish. Overall a brilliant product and I would shop here again."
+  },
+  {
+    "reviewerName": "Sarah M.",
+    "rating": 5,
+    "title": "Could not be happier",
+    "body": "The product feels sturdy and well finished. No loose threads or cheap feel — clearly made with care. Very impressed overall. Overall a brilliant product and I would shop here again."
+  },
+  {
+    "reviewerName": "Emma R.",
+    "rating": 4,
+    "title": "Fantastic find",
+    "body": "Perfect addition to my wardrobe. Versatile, comfortable, and looks smart. Delivery was quick too which was a bonus. Overall a brilliant product and I would shop here again."
+  },
+  {
+    "reviewerName": "James B.",
+    "rating": 5,
+    "title": "Really impressed",
+    "body": "I rarely leave reviews but this deserves one. Brilliant quality, true to size, and the sale price made it an even better buy. Overall a brilliant product and I would shop here again."
+  },
+  {
+    "reviewerName": "Olivia E.",
+    "rating": 5,
+    "title": "Top quality item",
+    "body": "Lovely item — exactly what I needed. The photos do not do it justice. Already recommended it to two colleagues. Overall a brilliant product and I would shop here again."
+  },
+  {
+    "reviewerName": "Mohammed H.",
+    "rating": 5,
+    "title": "Will buy again",
+    "body": "Very pleased with the overall quality. Packaging was neat, product was clean, and it matched the description perfectly. Overall a brilliant product and I would shop here again."
+  },
+  {
+    "reviewerName": "Priya N.",
+    "rating": 4,
+    "title": "Lovely product",
+    "body": "Good value and excellent craftsmanship. Have washed it twice already and the colour has not faded at all. Overall a brilliant product and I would shop here again."
+  },
+  {
+    "reviewerName": "David M.",
+    "rating": 5,
+    "title": "Superb quality",
+    "body": "Smart, practical, and well priced. Arrived earlier than expected and I have been using it daily since it came. Overall a brilliant product and I would shop here again."
+  },
+  {
+    "reviewerName": "Sophie R.",
+    "rating": 5,
+    "title": "Amazing deal",
+    "body": "This exceeded my expectations in every way. Material feels premium, fit is spot on, and it looks great. Overall a brilliant product and I would shop here again."
+  },
+  {
+    "reviewerName": "Amelia B.",
+    "rating": 4,
+    "title": "Five stars from me",
+    "body": "One of the best online purchases I have made this year. Would not hesitate to order again from here. Overall a brilliant product and I would shop here again."
+  },
+  {
+    "reviewerName": "Daniel E.",
+    "rating": 5,
+    "title": "Delighted with my order",
+    "body": "Super happy with the quality and finish. It feels like a much more expensive product than what I paid. Overall a brilliant product and I would shop here again."
+  },
+  {
+    "reviewerName": "Grace H.",
+    "rating": 5,
+    "title": "Absolutely love it",
+    "body": "This is honestly one of the best products I have ordered online. The quality is outstanding and it feels premium from the moment you open the box. Overall a brilliant product and I would shop here again."
+  },
+  {
+    "reviewerName": "Lucy N.",
+    "rating": 5,
+    "title": "Best purchase this year",
+    "body": "Arrived well packaged and exactly as described. Really pleased with the finish and attention to detail — would definitely recommend to friends and family. Overall a brilliant product and I would shop here again."
+  },
+  {
+    "reviewerName": "Harry M.",
+    "rating": 5,
+    "title": "Excellent quality",
+    "body": "Great product at a fair price. Comfortable, well made, and looks even better in person than in the photos on the website. Overall a brilliant product and I would shop here again."
+  },
+  {
+    "reviewerName": "Chloe R.",
+    "rating": 4,
+    "title": "Highly recommend",
+    "body": "I was unsure at first but so glad I went ahead. Soft material, neat stitching, and the colour is true to the pictures. Very satisfied. Overall a brilliant product and I would shop here again."
+  },
+  {
+    "reviewerName": "Ryan B.",
+    "rating": 5,
+    "title": "Great value for money",
+    "body": "Fast delivery and a brilliant product. Have already worn it several times and it still looks brand new. Will be ordering another colour soon. Overall a brilliant product and I would shop here again."
+  },
+  {
+    "reviewerName": "Aisha E.",
+    "rating": 4,
+    "title": "Perfect for everyday use",
+    "body": "Quality is far better than I expected for the price. Fits perfectly and feels durable — exactly what I was looking for. Overall a brilliant product and I would shop here again."
+  },
+  {
+    "reviewerName": "Tom H.",
+    "rating": 5,
+    "title": "Very happy with this",
+    "body": "Bought this as a gift and the recipient loved it. Presentation was lovely and the product itself feels luxurious. Highly recommend. Overall a brilliant product and I would shop here again."
+  },
+  {
+    "reviewerName": "Emily N.",
+    "rating": 5,
+    "title": "Worth every penny",
+    "body": "Simple, stylish, and well made. Washes well and keeps its shape. One of my favourite purchases from this site so far. Overall a brilliant product and I would shop here again."
+  },
+  {
+    "reviewerName": "Jack M.",
+    "rating": 4,
+    "title": "Exceeded expectations",
+    "body": "Really happy with this order. Good sizing, nice weight to the fabric, and the overall finish is excellent. Five stars. Overall a brilliant product and I would shop here again."
+  },
+  {
+    "reviewerName": "Mia R.",
+    "rating": 5,
+    "title": "Brilliant product",
+    "body": "Have ordered similar items elsewhere before but this one is genuinely the best. Great customer experience from start to finish. Overall a brilliant product and I would shop here again."
+  },
+  {
+    "reviewerName": "Noah B.",
+    "rating": 5,
+    "title": "Could not be happier",
+    "body": "The product feels sturdy and well finished. No loose threads or cheap feel — clearly made with care. Very impressed overall. Overall a brilliant product and I would shop here again."
+  },
+  {
+    "reviewerName": "Isla E.",
+    "rating": 4,
+    "title": "Fantastic find",
+    "body": "Perfect addition to my wardrobe. Versatile, comfortable, and looks smart. Delivery was quick too which was a bonus. Overall a brilliant product and I would shop here again."
+  },
+  {
+    "reviewerName": "Leo H.",
+    "rating": 5,
+    "title": "Really impressed",
+    "body": "I rarely leave reviews but this deserves one. Brilliant quality, true to size, and the sale price made it an even better buy. Overall a brilliant product and I would shop here again."
+  },
+  {
+    "reviewerName": "Freya N.",
+    "rating": 5,
+    "title": "Top quality item",
+    "body": "Lovely item — exactly what I needed. The photos do not do it justice. Already recommended it to two colleagues. Overall a brilliant product and I would shop here again."
+  },
+  {
+    "reviewerName": "Oscar M.",
+    "rating": 5,
+    "title": "Will buy again",
+    "body": "Very pleased with the overall quality. Packaging was neat, product was clean, and it matched the description perfectly. Overall a brilliant product and I would shop here again."
+  },
+  {
+    "reviewerName": "Zara R.",
+    "rating": 4,
+    "title": "Lovely product",
+    "body": "Good value and excellent craftsmanship. Have washed it twice already and the colour has not faded at all. Overall a brilliant product and I would shop here again."
+  },
+  {
+    "reviewerName": "Ben B.",
+    "rating": 5,
+    "title": "Superb quality",
+    "body": "Smart, practical, and well priced. Arrived earlier than expected and I have been using it daily since it came. Overall a brilliant product and I would shop here again."
+  },
+  {
+    "reviewerName": "Hannah E.",
+    "rating": 5,
+    "title": "Amazing deal",
+    "body": "This exceeded my expectations in every way. Material feels premium, fit is spot on, and it looks great. Overall a brilliant product and I would shop here again."
+  },
+  {
+    "reviewerName": "Sam H.",
+    "rating": 4,
+    "title": "Five stars from me",
+    "body": "One of the best online purchases I have made this year. Would not hesitate to order again from here. Overall a brilliant product and I would shop here again."
+  },
+  {
+    "reviewerName": "Nadia N.",
+    "rating": 5,
+    "title": "Delighted with my order",
+    "body": "Super happy with the quality and finish. It feels like a much more expensive product than what I paid. Overall a brilliant product and I would shop here again."
+  },
+  {
+    "reviewerName": "Sarah M.",
+    "rating": 5,
+    "title": "Absolutely love it",
+    "body": "This is honestly one of the best products I have ordered online. The quality is outstanding and it feels premium from the moment you open the box. Overall a brilliant product and I would shop here again."
+  },
+  {
+    "reviewerName": "Emma R.",
+    "rating": 5,
+    "title": "Best purchase this year",
+    "body": "Arrived well packaged and exactly as described. Really pleased with the finish and attention to detail — would definitely recommend to friends and family. Overall a brilliant product and I would shop here again."
+  },
+  {
+    "reviewerName": "James B.",
+    "rating": 5,
+    "title": "Excellent quality",
+    "body": "Great product at a fair price. Comfortable, well made, and looks even better in person than in the photos on the website. Overall a brilliant product and I would shop here again."
+  },
+  {
+    "reviewerName": "Olivia E.",
+    "rating": 4,
+    "title": "Highly recommend",
+    "body": "I was unsure at first but so glad I went ahead. Soft material, neat stitching, and the colour is true to the pictures. Very satisfied. Overall a brilliant product and I would shop here again."
+  },
+  {
+    "reviewerName": "Mohammed H.",
+    "rating": 5,
+    "title": "Great value for money",
+    "body": "Fast delivery and a brilliant product. Have already worn it several times and it still looks brand new. Will be ordering another colour soon. Overall a brilliant product and I would shop here again."
+  },
+  {
+    "reviewerName": "Priya N.",
+    "rating": 4,
+    "title": "Perfect for everyday use",
+    "body": "Quality is far better than I expected for the price. Fits perfectly and feels durable — exactly what I was looking for. Overall a brilliant product and I would shop here again."
+  },
+  {
+    "reviewerName": "David M.",
+    "rating": 5,
+    "title": "Very happy with this",
+    "body": "Bought this as a gift and the recipient loved it. Presentation was lovely and the product itself feels luxurious. Highly recommend. Overall a brilliant product and I would shop here again."
+  },
+  {
+    "reviewerName": "Sophie R.",
+    "rating": 5,
+    "title": "Worth every penny",
+    "body": "Simple, stylish, and well made. Washes well and keeps its shape. One of my favourite purchases from this site so far. Overall a brilliant product and I would shop here again."
+  },
+  {
+    "reviewerName": "Amelia B.",
+    "rating": 4,
+    "title": "Exceeded expectations",
+    "body": "Really happy with this order. Good sizing, nice weight to the fabric, and the overall finish is excellent. Five stars. Overall a brilliant product and I would shop here again."
+  },
+  {
+    "reviewerName": "Daniel E.",
+    "rating": 5,
+    "title": "Brilliant product",
+    "body": "Have ordered similar items elsewhere before but this one is genuinely the best. Great customer experience from start to finish. Overall a brilliant product and I would shop here again."
+  },
+  {
+    "reviewerName": "Grace H.",
+    "rating": 5,
+    "title": "Could not be happier",
+    "body": "The product feels sturdy and well finished. No loose threads or cheap feel — clearly made with care. Very impressed overall. Overall a brilliant product and I would shop here again."
+  },
+  {
+    "reviewerName": "Lucy N.",
+    "rating": 4,
+    "title": "Fantastic find",
+    "body": "Perfect addition to my wardrobe. Versatile, comfortable, and looks smart. Delivery was quick too which was a bonus. Overall a brilliant product and I would shop here again."
+  },
+  {
+    "reviewerName": "Harry M.",
+    "rating": 5,
+    "title": "Really impressed",
+    "body": "I rarely leave reviews but this deserves one. Brilliant quality, true to size, and the sale price made it an even better buy. Overall a brilliant product and I would shop here again."
+  },
+  {
+    "reviewerName": "Chloe R.",
+    "rating": 5,
+    "title": "Top quality item",
+    "body": "Lovely item — exactly what I needed. The photos do not do it justice. Already recommended it to two colleagues. Overall a brilliant product and I would shop here again."
+  },
+  {
+    "reviewerName": "Ryan B.",
+    "rating": 5,
+    "title": "Will buy again",
+    "body": "Very pleased with the overall quality. Packaging was neat, product was clean, and it matched the description perfectly. Overall a brilliant product and I would shop here again."
+  },
+  {
+    "reviewerName": "Aisha E.",
+    "rating": 4,
+    "title": "Lovely product",
+    "body": "Good value and excellent craftsmanship. Have washed it twice already and the colour has not faded at all. Overall a brilliant product and I would shop here again."
+  },
+  {
+    "reviewerName": "Tom H.",
+    "rating": 5,
+    "title": "Superb quality",
+    "body": "Smart, practical, and well priced. Arrived earlier than expected and I have been using it daily since it came. Overall a brilliant product and I would shop here again."
+  },
+  {
+    "reviewerName": "Emily N.",
+    "rating": 5,
+    "title": "Amazing deal",
+    "body": "This exceeded my expectations in every way. Material feels premium, fit is spot on, and it looks great. Overall a brilliant product and I would shop here again."
+  },
+  {
+    "reviewerName": "Jack M.",
+    "rating": 4,
+    "title": "Five stars from me",
+    "body": "One of the best online purchases I have made this year. Would not hesitate to order again from here. Overall a brilliant product and I would shop here again."
+  },
+  {
+    "reviewerName": "Mia R.",
+    "rating": 5,
+    "title": "Delighted with my order",
+    "body": "Super happy with the quality and finish. It feels like a much more expensive product than what I paid. Overall a brilliant product and I would shop here again."
+  },
+  {
+    "reviewerName": "Noah B.",
+    "rating": 5,
+    "title": "Absolutely love it",
+    "body": "This is honestly one of the best products I have ordered online. The quality is outstanding and it feels premium from the moment you open the box. Overall a brilliant product and I would shop here again."
+  },
+  {
+    "reviewerName": "Isla E.",
+    "rating": 5,
+    "title": "Best purchase this year",
+    "body": "Arrived well packaged and exactly as described. Really pleased with the finish and attention to detail — would definitely recommend to friends and family. Overall a brilliant product and I would shop here again."
+  },
+  {
+    "reviewerName": "Leo H.",
+    "rating": 5,
+    "title": "Excellent quality",
+    "body": "Great product at a fair price. Comfortable, well made, and looks even better in person than in the photos on the website. Overall a brilliant product and I would shop here again."
+  },
+  {
+    "reviewerName": "Freya N.",
+    "rating": 4,
+    "title": "Highly recommend",
+    "body": "I was unsure at first but so glad I went ahead. Soft material, neat stitching, and the colour is true to the pictures. Very satisfied. Overall a brilliant product and I would shop here again."
+  },
+  {
+    "reviewerName": "Oscar M.",
+    "rating": 5,
+    "title": "Great value for money",
+    "body": "Fast delivery and a brilliant product. Have already worn it several times and it still looks brand new. Will be ordering another colour soon. Overall a brilliant product and I would shop here again."
+  },
+  {
+    "reviewerName": "Zara R.",
+    "rating": 4,
+    "title": "Perfect for everyday use",
+    "body": "Quality is far better than I expected for the price. Fits perfectly and feels durable — exactly what I was looking for. Overall a brilliant product and I would shop here again."
+  },
+  {
+    "reviewerName": "Ben B.",
+    "rating": 5,
+    "title": "Very happy with this",
+    "body": "Bought this as a gift and the recipient loved it. Presentation was lovely and the product itself feels luxurious. Highly recommend. Overall a brilliant product and I would shop here again."
+  },
+  {
+    "reviewerName": "Hannah E.",
+    "rating": 5,
+    "title": "Worth every penny",
+    "body": "Simple, stylish, and well made. Washes well and keeps its shape. One of my favourite purchases from this site so far. Overall a brilliant product and I would shop here again."
+  },
+  {
+    "reviewerName": "Sam H.",
+    "rating": 4,
+    "title": "Exceeded expectations",
+    "body": "Really happy with this order. Good sizing, nice weight to the fabric, and the overall finish is excellent. Five stars. Overall a brilliant product and I would shop here again."
+  },
+  {
+    "reviewerName": "Nadia N.",
+    "rating": 5,
+    "title": "Brilliant product",
+    "body": "Have ordered similar items elsewhere before but this one is genuinely the best. Great customer experience from start to finish. Overall a brilliant product and I would shop here again."
+  },
+  {
+    "reviewerName": "Sarah M.",
+    "rating": 5,
+    "title": "Could not be happier",
+    "body": "The product feels sturdy and well finished. No loose threads or cheap feel — clearly made with care. Very impressed overall. Overall a brilliant product and I would shop here again."
+  },
+  {
+    "reviewerName": "Emma R.",
+    "rating": 4,
+    "title": "Fantastic find",
+    "body": "Perfect addition to my wardrobe. Versatile, comfortable, and looks smart. Delivery was quick too which was a bonus. Overall a brilliant product and I would shop here again."
+  },
+  {
+    "reviewerName": "James B.",
+    "rating": 5,
+    "title": "Really impressed",
+    "body": "I rarely leave reviews but this deserves one. Brilliant quality, true to size, and the sale price made it an even better buy. Overall a brilliant product and I would shop here again."
+  },
+  {
+    "reviewerName": "Olivia E.",
+    "rating": 5,
+    "title": "Top quality item",
+    "body": "Lovely item — exactly what I needed. The photos do not do it justice. Already recommended it to two colleagues. Overall a brilliant product and I would shop here again."
+  },
+  {
+    "reviewerName": "Mohammed H.",
+    "rating": 5,
+    "title": "Will buy again",
+    "body": "Very pleased with the overall quality. Packaging was neat, product was clean, and it matched the description perfectly. Overall a brilliant product and I would shop here again."
+  },
+  {
+    "reviewerName": "Priya N.",
+    "rating": 4,
+    "title": "Lovely product",
+    "body": "Good value and excellent craftsmanship. Have washed it twice already and the colour has not faded at all. Overall a brilliant product and I would shop here again."
+  },
+  {
+    "reviewerName": "David M.",
+    "rating": 5,
+    "title": "Superb quality",
+    "body": "Smart, practical, and well priced. Arrived earlier than expected and I have been using it daily since it came. Overall a brilliant product and I would shop here again."
+  },
+  {
+    "reviewerName": "Sophie R.",
+    "rating": 5,
+    "title": "Amazing deal",
+    "body": "This exceeded my expectations in every way. Material feels premium, fit is spot on, and it looks great. Overall a brilliant product and I would shop here again."
+  },
+  {
+    "reviewerName": "Amelia B.",
+    "rating": 4,
+    "title": "Five stars from me",
+    "body": "One of the best online purchases I have made this year. Would not hesitate to order again from here. Overall a brilliant product and I would shop here again."
+  },
+  {
+    "reviewerName": "Daniel E.",
+    "rating": 5,
+    "title": "Delighted with my order",
+    "body": "Super happy with the quality and finish. It feels like a much more expensive product than what I paid. Overall a brilliant product and I would shop here again."
+  }
+]

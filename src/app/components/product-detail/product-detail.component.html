@@ -113,6 +113,12 @@
           <a class="pdp-review-link" href="#reviews">({{product.reviewCount}} Reviews)</a>
         </div>
 
+        <!-- Delivery estimate -->
+        <div class="pdp-delivery-est">
+          <span class="pdp-delivery-icon"><i class="fa-light fa-truck-fast"></i></span>
+          <span>Delivery by <strong>{{ deliveryDateFrom }}</strong> – <strong>{{ deliveryDateTo }}</strong></span>
+        </div>
+
         <!-- Stock -->
         <div class="pdp-stock in-stock">In stock</div>
 
@@ -176,9 +182,9 @@
             </span>
           </div>
           <div class="pdp-accordion-body" *ngIf="deliveryOpen">
-            <p>Standard delivery: 3-5 working days</p>
-            <p>Express delivery: Next working day</p>
-            <p>Free returns within 28 days</p>
+            <p><strong>Standard delivery:</strong> Estimated arrival {{ deliveryDateFrom }} – {{ deliveryDateTo }} (8–10 working days from today).</p>
+            <p>Express delivery options available at checkout.</p>
+            <p>Free returns within 28 days.</p>
           </div>
         </div>
 
@@ -204,6 +210,10 @@
                   <div *ngIf="!getFirstImage(rp.images)" class="pdp-related-placeholder"></div>
                 </div>
                 <div class="pdp-related-name">{{rp.name}}</div>
+                <div class="pdp-related-stars" *ngIf="rp.reviewCount > 0">
+                  <span *ngFor="let s of starArray" class="pdp-star sm" [class.filled]="s <= rp.avgRating">★</span>
+                  <span class="pdp-related-rc">({{ rp.reviewCount }})</span>
+                </div>
                 <div class="pdp-related-price">{{rp.salePrice || rp.price | currency:'GBP':'symbol':'1.2-2'}}</div>
               </a>
             </div>
@@ -247,6 +257,10 @@
                   <div *ngIf="!getFirstImage(rp.images)" class="pdp-more-placeholder"></div>
                 </div>
                 <div class="pdp-more-name">{{rp.name}}</div>
+                <div class="pdp-related-stars" *ngIf="rp.reviewCount > 0">
+                  <span *ngFor="let s of starArray" class="pdp-star sm" [class.filled]="s <= rp.avgRating">★</span>
+                  <span class="pdp-related-rc">({{ rp.reviewCount }})</span>
+                </div>
                 <div class="pdp-more-price">{{rp.salePrice || rp.price | currency:'GBP':'symbol':'1.2-2'}}</div>
               </a>
             </div>
@@ -267,7 +281,7 @@
       <h2 class="pdp-section-title">Reviews</h2>
 
       <!-- Stats -->
-      <div class="reviews-stats" *ngIf="reviewStats?.totalCount > 0">
+      <div class="reviews-stats" *ngIf="reviewStats && reviewStats.totalCount > 0">
         <div class="reviews-snapshot">
           <div class="snapshot-title">Rating Snapshot</div>
           <div class="snapshot-row" *ngFor="let s of [5,4,3,2,1]">

@@ -311,7 +311,7 @@
         <!-- Main price row -->
         <div class="prod-price-row">
           <span class="prod-price-label" *ngIf="!p.salePrice">Price</span>
-          <span class="prod-price-label" *ngIf="p.salePrice">Was</span>
+          <!-- <span class="prod-price-label" *ngIf="p.salePrice">Was</span> -->
           <div class="prod-prices">
             <span class="price-sale" *ngIf="p.salePrice">{{sharedService.currency}}{{p.salePrice}}</span>
             <span class="price-orig" [class.crossed]="p.salePrice">{{sharedService.currency}}{{p.price}}</span>

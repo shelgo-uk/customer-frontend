@@ -169,6 +169,10 @@
                 </div>
                 <div class="prod-info">
                     <div class="prod-name">{{ p.name }}</div>
+                    <div class="prod-stars" *ngIf="p.reviewCount > 0">
+                        <span *ngFor="let s of [1,2,3,4,5]" class="star" [class.on]="s <= p.avgRating">★</span>
+                        <span class="star-count">({{ p.reviewCount }})</span>
+                    </div>
                     <div class="prod-prices">
                         <span class="price-sale" *ngIf="p.salePrice">{{ sharedService.currency }}{{ p.salePrice }}</span>
                         <span class="price-orig" [class.crossed]="p.salePrice">{{ sharedService.currency }}{{ p.price }}</span>

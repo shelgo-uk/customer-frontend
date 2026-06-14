@@ -410,7 +410,41 @@
     color: #ddd;
     &.filled { color: #1c1c1c; }
     &.lg { font-size: 20px; }
+    &.sm { font-size: 11px; }
     &.clickable { cursor: pointer; }
+}
+
+.pdp-delivery-est {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    color: #333;
+    padding: 10px 12px;
+    margin-bottom: 12px;
+    background: #f7f7f7;
+    border: 1px solid #ebebeb;
+    border-radius: 4px;
+
+    .pdp-delivery-icon {
+        color: #2e7d32;
+        font-size: 15px;
+    }
+
+    strong { font-weight: 600; color: #1c1c1c; }
+}
+
+.pdp-related-stars {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    margin: 2px 0 4px;
+
+    .pdp-related-rc {
+        font-size: 10px;
+        color: #777;
+        margin-left: 3px;
+    }
 }
 
 .pdp-stock {

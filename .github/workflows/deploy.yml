@@ -5,6 +5,9 @@ on:
     branches: [main]
   workflow_dispatch:
 
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 jobs:
   build-deploy:
     runs-on: ubuntu-latest
@@ -17,7 +20,7 @@ jobs:
           cache: 'npm'
 
       - name: Install dependencies
-        run: npm ci
+        run: npm install --force
 
       - name: Build
         run: npx ng build --configuration production
@@ -41,8 +44,11 @@ jobs:
           key: ${{ secrets.VPS_SSH_KEY }}
           port: 22
           script: |
+            set -e
+            echo '{"APIUrl":"https://api.shelgo.uk/api/"}' > /var/www/customer-config.json
             DIST_DIR=$(ls /var/www/customer/dist/ | head -1)
+            echo "Customer dist: $DIST_DIR"
             sed -i "s|root /var/www/customer/dist/.*/browser;|root /var/www/customer/dist/${DIST_DIR}/browser;|g" /etc/nginx/sites-available/shelgo.conf
             cp /var/www/customer-config.json /var/www/customer/dist/${DIST_DIR}/browser/assets/configuration.json
             nginx -t && systemctl reload nginx
-            echo "Customer deployed: ${DIST_DIR}"
+            echo "Customer deployed successfully"

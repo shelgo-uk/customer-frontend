@@ -758,3 +758,14 @@
     color: #1c1c1c;
     margin-top: 4px;
 }
+
+.prod-stars {
+    display: flex;
+    align-items: center;
+    gap: 1px;
+    margin: 4px 0 2px;
+
+    .star { font-size: 10px; color: #ddd; }
+    .star.on { color: #1c1c1c; }
+    .star-count { font-size: 10px; color: #888; margin-left: 2px; }
+}
